@@ -57,7 +57,7 @@ final class GameMatch extends Model
 
     public function sets(): HasMany
     {
-        return $this->hasMany(MatchSet::class);
+        return $this->hasMany(MatchSet::class, 'match_id');
     }
 
     public function scopeCompleted($query)
