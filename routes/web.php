@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MatchPreviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -7,3 +8,6 @@ Route::get('/', function () {
 });
 
 Route::get('/health', fn () => response()->json(['status' => 'ok']));
+
+Route::get('/matches/{match}/preview', MatchPreviewController::class)
+    ->name('matches.preview');
