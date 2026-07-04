@@ -17,6 +17,7 @@ class PlayerFactory extends Factory
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
+            'gender' => fake()->randomElement(['M', 'F']),
             'country' => fake()->country(),
             'country_code' => fake()->countryCode(),
             'date_of_birth' => fake()->dateTimeBetween('-40 years', '-18 years'),
@@ -47,6 +48,20 @@ class PlayerFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'dominant_hand' => 'Left',
+        ]);
+    }
+
+    public function male(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'gender' => 'M',
+        ]);
+    }
+
+    public function female(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'gender' => 'F',
         ]);
     }
 }

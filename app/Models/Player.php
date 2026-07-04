@@ -14,8 +14,10 @@ final class Player extends Model
 
     protected $fillable = [
         'statstt_id',
+        'wtt_id',
         'first_name',
         'last_name',
+        'gender',
         'country',
         'country_code',
         'date_of_birth',
@@ -31,6 +33,7 @@ final class Player extends Model
         'height_cm' => 'integer',
         'world_ranking' => 'integer',
         'rating_points' => 'integer',
+        'gender' => 'string',
     ];
 
     public function getFullNameAttribute(): string
