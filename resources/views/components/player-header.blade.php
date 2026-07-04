@@ -1,4 +1,4 @@
-@props(['player', 'ranking' => null])
+@props(['player', 'ranking' => null, 'rankingMovement' => null])
 
 <div class="flex items-center gap-4">
     <span class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $player->full_name }}</span>
@@ -10,6 +10,11 @@
     @if($player->world_ranking)
         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200 dark:bg-amber-500/20 dark:text-amber-400 dark:border-amber-500/30">
             #{{ $player->world_ranking }}
+            @if($rankingMovement !== null && $rankingMovement !== 0)
+                <span class="ml-0.5 {{ $rankingMovement > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400' }}">
+                    {{ $rankingMovement > 0 ? '↑' . $rankingMovement : '↓' . abs($rankingMovement) }}
+                </span>
+            @endif
         </span>
     @endif
 

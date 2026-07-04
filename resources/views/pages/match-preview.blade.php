@@ -4,9 +4,9 @@
 
         {{-- Player Matchup Header --}}
         <div class="flex items-center justify-between">
-            <x-player-header :player="$playerA['player']" />
+            <x-player-header :player="$playerA['player']" :rankingMovement="$playerA['rankingMovement']" />
             <span class="text-gray-300 dark:text-white/20 text-sm font-semibold uppercase tracking-widest">vs</span>
-            <x-player-header :player="$playerB['player']" />
+            <x-player-header :player="$playerB['player']" :rankingMovement="$playerB['rankingMovement']" />
         </div>
 
         {{-- Match Header --}}
@@ -14,8 +14,8 @@
 
         {{-- Player Cards --}}
         <div class="grid grid-cols-2 gap-6">
-            <x-player-card :player="$playerA['player']" />
-            <x-player-card :player="$playerB['player']" />
+            <x-player-card :player="$playerA['player']" :stats="$playerA['stats']" />
+            <x-player-card :player="$playerB['player']" :stats="$playerB['stats']" />
         </div>
 
         {{-- Last 7 Matches --}}

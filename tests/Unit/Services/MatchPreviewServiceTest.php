@@ -11,6 +11,7 @@ use App\Services\MatchPreviewService;
 use App\Services\MatchService;
 use App\Services\NewsService;
 use App\Services\PlayerService;
+use App\Services\RankingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -28,6 +29,7 @@ class MatchPreviewServiceTest extends TestCase
             new PlayerService,
             new MatchService,
             new NewsService,
+            new RankingService,
         );
     }
 

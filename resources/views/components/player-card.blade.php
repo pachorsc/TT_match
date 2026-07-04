@@ -1,4 +1,4 @@
-@props(['player'])
+@props(['player', 'stats' => null])
 
 <div class="rounded-2xl bg-gray-50 border border-gray-200 dark:bg-white/[0.03] dark:border-white/[0.06] p-6 space-y-4 transition-colors duration-300">
     <div class="flex items-center justify-between">
@@ -39,4 +39,27 @@
             <p class="font-semibold text-gray-700 dark:text-white/80">{{ $player->height_cm ? $player->height_cm . ' cm' : '—' }}</p>
         </div>
     </div>
+
+    @if($stats)
+        <div class="pt-3 border-t border-gray-200 dark:border-white/[0.06]">
+            <div class="grid grid-cols-4 gap-2 text-center">
+                <div class="space-y-0.5">
+                    <span class="text-gray-400 dark:text-white/40 text-xs uppercase tracking-wider">Matches</span>
+                    <p class="font-bold text-gray-900 dark:text-white">{{ $stats['total_matches'] }}</p>
+                </div>
+                <div class="space-y-0.5">
+                    <span class="text-gray-400 dark:text-white/40 text-xs uppercase tracking-wider">Wins</span>
+                    <p class="font-bold text-emerald-600 dark:text-emerald-400">{{ $stats['wins'] }}</p>
+                </div>
+                <div class="space-y-0.5">
+                    <span class="text-gray-400 dark:text-white/40 text-xs uppercase tracking-wider">Losses</span>
+                    <p class="font-bold text-red-500 dark:text-red-400">{{ $stats['losses'] }}</p>
+                </div>
+                <div class="space-y-0.5">
+                    <span class="text-gray-400 dark:text-white/40 text-xs uppercase tracking-wider">Win %</span>
+                    <p class="font-bold text-gray-900 dark:text-white">{{ $stats['win_rate'] }}%</p>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

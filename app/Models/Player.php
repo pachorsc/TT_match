@@ -13,6 +13,7 @@ final class Player extends Model
     use HasFactory;
 
     protected $fillable = [
+        'statstt_id',
         'first_name',
         'last_name',
         'country',
