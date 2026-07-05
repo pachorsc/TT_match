@@ -1,4 +1,5 @@
 import './bootstrap';
+import initPlayerSearch from './components/player-search';
 
 document.addEventListener('DOMContentLoaded', function () {
     const toggle = document.getElementById('theme-toggle');
@@ -10,4 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('theme', isDark ? 'light' : 'dark');
         });
     }
+
+    initPlayerSearch();
 });

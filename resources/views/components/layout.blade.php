@@ -38,9 +38,11 @@
                    {{ $currentRoute === 'home' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
                     Partidos
                 </a>
-                <span class="px-3.5 py-2 rounded-xl text-sm font-semibold text-white/20 cursor-not-allowed select-none">
+                <a href="{{ route('predictions') }}"
+                   class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
+                   {{ $currentRoute === 'predictions' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
                     Predicción
-                </span>
+                </a>
                 <div class="ml-2 pl-2 border-l border-white/[0.06]">
                     <x-theme-toggle />
                 </div>

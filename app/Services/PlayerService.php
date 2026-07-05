@@ -40,6 +40,13 @@ final class PlayerService
         ];
     }
 
+    public function getPlayersByGender(string $gender): Collection
+    {
+        return Player::where('gender', $gender)
+            ->orderBy('world_ranking')
+            ->get(['id', 'first_name', 'last_name', 'country_code', 'world_ranking', 'rating_points', 'gender']);
+    }
+
     public function getLast7Matches(Player $player): Collection
     {
         return GameMatch::completed()
