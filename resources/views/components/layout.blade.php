@@ -38,10 +38,10 @@
                    {{ $currentRoute === 'home' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
                     Partidos
                 </a>
-                <a href="{{ route('predictions') }}"
+                <a href="{{ route('compare') }}"
                    class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
-                   {{ $currentRoute === 'predictions' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
-                    Predicción
+                   {{ $currentRoute === 'compare' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
+                    Comparar
                 </a>
                 <div class="ml-2 pl-2 border-l border-white/[0.06]">
                     <x-theme-toggle />

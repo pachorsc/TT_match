@@ -17,6 +17,7 @@ final class GameMatch extends Model
 
     protected $fillable = [
         'statstt_id',
+        'ittf_id',
         'tournament_id',
         'player_a_id',
         'player_b_id',

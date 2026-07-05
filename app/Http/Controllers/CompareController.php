@@ -11,7 +11,7 @@ use App\Services\PlayerService;
 use App\Services\RankingService;
 use Illuminate\Http\Request;
 
-final class PredictionController extends Controller
+final class CompareController extends Controller
 {
     public function __construct(
         private readonly PlayerService $playerService,
@@ -74,7 +74,7 @@ final class PredictionController extends Controller
             $data['news'] = $news;
         }
 
-        return view('pages.predictions', $data);
+        return view('pages.compare', $data);
     }
 
     private function getRankingMovement(Player $player): ?int

@@ -14,6 +14,7 @@ final class Tournament extends Model
 
     protected $fillable = [
         'statstt_id',
+        'ittf_id',
         'name',
         'location',
         'country',

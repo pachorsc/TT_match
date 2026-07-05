@@ -16,12 +16,12 @@
                 @php
                     $currentGender = $gender ?? 'M';
                 @endphp
-                <a href="{{ route('predictions', ['gender' => 'M', 'player_a' => request('player_a'), 'player_b' => request('player_b')]) }}"
+                <a href="{{ route('compare', ['gender' => 'M', 'player_a' => request('player_a'), 'player_b' => request('player_b')]) }}"
                    class="px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200
                    {{ $currentGender === 'M' ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30' : 'bg-white/[0.04] text-white/50 hover:text-white/70 hover:bg-white/[0.06] border border-transparent' }}">
                     ♂ Masculino
                 </a>
-                <a href="{{ route('predictions', ['gender' => 'F', 'player_a' => request('player_a'), 'player_b' => request('player_b')]) }}"
+                <a href="{{ route('compare', ['gender' => 'F', 'player_a' => request('player_a'), 'player_b' => request('player_b')]) }}"
                    class="px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200
                    {{ $currentGender === 'F' ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30' : 'bg-white/[0.04] text-white/50 hover:text-white/70 hover:bg-white/[0.06] border border-transparent' }}">
                     ♀ Femenino
@@ -29,7 +29,7 @@
             </div>
 
             {{-- Player Selectors --}}
-            <form method="GET" action="{{ route('predictions') }}" class="space-y-6" id="predict-form">
+            <form method="GET" action="{{ route('compare') }}" class="space-y-6" id="predict-form">
                 <input type="hidden" name="gender" value="{{ $currentGender }}">
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
