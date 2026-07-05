@@ -36,12 +36,12 @@
                 <a href="{{ route('home') }}"
                    class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
                    {{ $currentRoute === 'home' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
-                    Partidos
+                    Inicio
                 </a>
                 <a href="{{ route('compare') }}"
                    class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
                    {{ $currentRoute === 'compare' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
-                    Comparar
+                    Head to Head
                 </a>
                 <div class="ml-2 pl-2 border-l border-white/[0.06]">
                     <x-theme-toggle />
