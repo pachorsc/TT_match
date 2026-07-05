@@ -22,8 +22,11 @@ from auth import IttfSession
 from config import (
     BASE_URL,
     IMPORT_DIR,
+    LIST_PLAYER_MATCHES,
     LIST_RANKING_MS,
     LIST_RANKING_WS,
+    PLAYER_MATCHES_QS,
+    PLAYER_MATCHES_URL,
     PLAYER_PROFILE_URL,
     RANKING_URLS,
     ROWS_PER_PAGE,
@@ -38,6 +41,7 @@ from importer import (
 from parser import (
     parse_pagination_info,
     parse_player_matches,
+    parse_player_matches_table,
     parse_player_profile,
     parse_ranking_table,
 )
@@ -207,50 +211,78 @@ def player(player_id: int):
 @fetch.command()
 @click.option("--player-id", required=True, type=int, help="ITTF player ID")
 @click.option("--max-year", default=None, type=int, help="Only keep matches from this year onwards")
-def player_matches(player_id: int, max_year: int | None):
-    """Fetch match history for a single player from their profile page.
+@click.option("--max-pages", default=None, type=int, help="Max pages to fetch (default: all)")
+def player_matches(player_id: int, max_year: int | None, max_pages: int | None):
+    """Fetch complete match history for a single player from the matches table page.
 
-    Filters to last 2 years by default (current year - 2).
+    Uses the Fabrik table format with all paginated pages.
+    Default year range: current year - 2. Only imports singles matches.
     """
     session = _get_session()
 
-    url = f"{PLAYER_PROFILE_URL}?vw_profiles___player_id_raw={player_id}"
-    click.echo(f"Fetching matches for player {player_id}...")
-
-    try:
-        resp = session.get(url)
-        resp.raise_for_status()
-    except Exception as e:
-        click.echo(f"ERROR fetching player {player_id}: {e}", err=True)
-        return
-
-    all_matches = parse_player_matches(resp.text)
-    if not all_matches:
-        click.echo("  No matches found.")
-        return
-
+    today = date.today().isoformat()
     current_year = date.today().year
     min_year = max_year if max_year else current_year - 2
 
+    click.echo(f"Fetching match history for player {player_id}...")
+
+    all_matches: list[dict] = []
+    page = 0
+
+    while True:
+        offset = page * ROWS_PER_PAGE
+        qs = PLAYER_MATCHES_QS.format(player_id=player_id)
+        url = f"{PLAYER_MATCHES_URL}?{qs}&limitstart{LIST_PLAYER_MATCHES}={offset}"
+
+        try:
+            resp = session.get(url)
+            resp.raise_for_status()
+        except Exception as e:
+            click.echo(f"  ERROR on page {page + 1}: {e}")
+            break
+
+        matches = parse_player_matches_table(resp.text)
+        if not matches:
+            if page == 0:
+                click.echo("  No matches found.")
+                return
+            break
+
+        all_matches.extend(matches)
+        click.echo(f"  Page {page + 1}: {len(matches)} singles matches (total: {len(all_matches)})")
+
+        pagination = parse_pagination_info(resp.text)
+        total_pages = pagination.get("total_pages", 0)
+
+        if max_pages and page + 1 >= max_pages:
+            break
+
+        if total_pages and page + 1 >= total_pages:
+            break
+
+        page += 1
+
+    # Filter by year and annotate
     filtered = []
     for m in all_matches:
         year_str = m.get("year", "")
         if year_str and year_str.isdigit():
             if int(year_str) >= min_year:
+                m["player_ittf_id"] = str(player_id)
                 filtered.append(m)
         else:
+            m["player_ittf_id"] = str(player_id)
             filtered.append(m)
 
-    click.echo(f"  Total matches: {len(all_matches)}, kept (since {min_year}): {len(filtered)}")
+    click.echo(f"  Total: {len(all_matches)}, kept (since {min_year}): {len(filtered)}")
 
     if not filtered:
         click.echo("  No matches within the requested time range.")
         return
 
     transformed = [transform_match(m) for m in filtered]
-    today = date.today().isoformat()
     output = {
-        "source": f"ITTF player matches {player_id}",
+        "source": f"ITTF player matches {player_id} (matches table)",
         "fetched_at": today,
         "player_id": player_id,
         "count": len(transformed),
@@ -338,26 +370,47 @@ def top100_matches(gender: str, limit: int, max_year: int | None, delay: float, 
         click.echo(f"  [{i + 1}/{len(players)}] Rank #{rank} - {name} (ID: {ittf_id})... ", nl=False)
 
         try:
-            url = f"{PLAYER_PROFILE_URL}?vw_profiles___player_id_raw={ittf_id}"
-            resp = session.get(url)
-            resp.raise_for_status()
+            player_matches_list: list[dict] = []
+            page = 0
 
-            matches = parse_player_matches(resp.text)
+            while True:
+                offset = page * ROWS_PER_PAGE
+                qs = PLAYER_MATCHES_QS.format(player_id=ittf_id)
+                url = f"{PLAYER_MATCHES_URL}?{qs}&limitstart{LIST_PLAYER_MATCHES}={offset}"
+
+                resp = session.get(url)
+                resp.raise_for_status()
+
+                matches = parse_player_matches_table(resp.text)
+                if not matches:
+                    break
+
+                player_matches_list.extend(matches)
+
+                pagination = parse_pagination_info(resp.text)
+                total_pages = pagination.get("total_pages", 0)
+
+                if total_pages and page + 1 >= total_pages:
+                    break
+
+                page += 1
+
+            # Filter by year and annotate
             filtered = []
-            for m in matches:
+            for m in player_matches_list:
                 year_str = m.get("year", "")
                 if year_str and year_str.isdigit():
                     if int(year_str) >= min_year:
                         m["player_rank"] = rank
-                        m["player_ittf_id"] = ittf_id
+                        m["player_ittf_id"] = str(ittf_id)
                         filtered.append(m)
                 else:
                     m["player_rank"] = rank
-                    m["player_ittf_id"] = ittf_id
+                    m["player_ittf_id"] = str(ittf_id)
                     filtered.append(m)
 
             all_matches.extend(transform_match(m) for m in filtered)
-            click.echo(f"{len(filtered)} matches")
+            click.echo(f"{len(filtered)} singles matches (from {len(player_matches_list)} total)")
             player_count += 1
 
         except Exception as e:

@@ -211,7 +211,7 @@ def _parse_match_item(match_div) -> dict[str, Any]:
 
 
 def parse_player_matches(html: str) -> list[dict[str, Any]]:
-    """Parse all match items from a player profile page.
+    """Parse all match items from a player profile page (div.match-item format).
 
     Args:
         html: Raw HTML of the player profile page.
@@ -229,8 +229,84 @@ def parse_player_matches(html: str) -> list[dict[str, Any]]:
     return results
 
 
+def parse_player_matches_table(html: str) -> list[dict[str, Any]]:
+    """Parse all match rows from the player-matches Fabrik table page.
+
+    The table has 14 cells per row:
+        [0] Year | [1] Tournament | [2] Player A (with country) | [3] Partner A
+        [4] Player B (with country) | [5] Partner B | [6] Event | [7] Stage
+        [8] Round | [9] Score | [10] Sets | [11] Winner | [12] Runner-up | [13] -
+
+    Only extracts singles matches (no partner in cells 3 and 5).
+
+    Returns:
+        Same format as parse_player_matches().
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    results = []
+
+    for row in soup.select("table[id^='list_'] tr.fabrik_row, table[id^='list_'] tr.fabrik_row___"):
+        cells = row.find_all("td")
+        if len(cells) < 11:
+            continue
+
+        partner_a = cells[3].get_text(strip=True) if len(cells) > 3 else ""
+        partner_b = cells[5].get_text(strip=True) if len(cells) > 5 else ""
+
+        # Skip doubles / team matches (partner columns are non-empty)
+        if partner_a or partner_b:
+            continue
+
+        year = cells[0].get_text(strip=True)
+        tournament = cells[1].get_text(strip=True)
+        player_a = cells[2].get_text(strip=True)
+        player_b = cells[4].get_text(strip=True)
+        event_type = cells[6].get_text(strip=True) if len(cells) > 6 else ""
+        stage = cells[7].get_text(strip=True) if len(cells) > 7 else ""
+        round_str = cells[8].get_text(strip=True) if len(cells) > 8 else ""
+        score = cells[9].get_text(strip=True) if len(cells) > 9 else ""
+        detailed_sets = cells[10].get_text(strip=True) if len(cells) > 10 else ""
+
+        winner = cells[11].get_text(strip=True) if len(cells) > 11 else ""
+
+        if not tournament or not player_a or not player_b:
+            continue
+
+        # Determine match result (WON/LOST) by checking if player_a is the winner
+        def _extract_name(text: str) -> str:
+            m = re.match(r'^(.+?)\s*\(', text)
+            return m.group(1).strip() if m else text.strip()
+
+        a_name = _extract_name(player_a)
+        b_name = _extract_name(player_b)
+
+        result = ""
+        if winner:
+            w_name = _extract_name(winner)
+            if w_name.lower() == a_name.lower():
+                result = "WON"
+            elif w_name.lower() == b_name.lower():
+                result = "LOST"
+
+        results.append({
+            "year": year,
+            "tournament": tournament,
+            "player_a": player_a,
+            "player_b": player_b,
+            "event_type": event_type,
+            "stage": stage,
+            "round": round_str,
+            "score": score,
+            "detailed_sets": detailed_sets,
+            "result": result,
+            "winner": winner,
+        })
+
+    return results
+
+
 def parse_pagination_info(html: str) -> dict[str, Any]:
-    """Extract pagination info from a rankings page.
+    """Extract pagination info from a Fabrik list page (rankings, matches, etc.).
 
     Returns:
         Dict with 'total' (int) and 'current_page' (int).

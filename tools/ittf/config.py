@@ -12,9 +12,20 @@ RANKING_URLS = {
 }
 
 PLAYER_PROFILE_URL = f"{BASE_URL}/player-profile/list/60"
-PLAYER_MATCHES_URL = f"{BASE_URL}/player-matches/list/31"
 
-ROWS_PER_PAGE = 25
+# Player matches page — Fabrik table with complete match history per player
+# Filter uses vw_matches___player_a_id OR vw_matches___player_b_id
+PLAYER_MATCHES_URL = f"{BASE_URL}/index.php/player-matches/list/31"
+PLAYER_MATCHES_QS = (
+    "resetfilters=1"
+    "&abc={player_id}"
+    "&vw_matches___player_a_id[value][]={player_id}"
+    "&vw_matches___player_a_id[join][]=OR"
+    "&vw_matches___player_b_id[value][]={player_id}"
+    "&vw_matches___player_b_id[join][]=OR"
+)
+
+ROWS_PER_PAGE = 50
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 IMPORT_DIR = PROJECT_ROOT / "storage" / "app" / "import" / "ittf"

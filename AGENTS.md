@@ -66,6 +66,10 @@ This file contains mandatory instructions for any AI agent working on this codeb
 - Never modify database tables manually. Use migrations, seeders, and factories.
 - Use foreign keys and proper indexes in all migrations.
 
+## Pending Tasks
+
+- **Import top 100 men singles matches from ITTF** — Run `python tools/ittf/ittf.py fetch top100-matches --gender men --limit 100 --delay 3` then `php artisan import:ittf matches --file=<generated_file>`. Paused to avoid rate limiting. Use `--limit N` (e.g. 20) for smaller batches.
+
 ## Communication
 
 - When completing a task, report what was done and any decisions made.
