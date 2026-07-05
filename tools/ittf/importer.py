@@ -40,16 +40,61 @@ def transform_player(row: dict[str, Any]) -> dict[str, Any]:
 
 def transform_match(row: dict[str, Any]) -> dict[str, Any]:
     """Transform an ITTF match row to Laravel match import format."""
-    return {
-        "player_a": row.get("player_a", ""),
-        "player_b": row.get("player_b", ""),
+    import re
+
+    def split_player(text: str) -> tuple[str, str]:
+        m = re.match(r'^(.+?)\s*\(([^)]+)\)\s*$', text)
+        if m:
+            return m.group(1).strip(), m.group(2).strip()
+        return text, ""
+
+    player_a_raw = row.get("player_a", "")
+    player_b_raw = row.get("player_b", "")
+    player_a_name, player_a_country = split_player(player_a_raw)
+    player_b_name, player_b_country = split_player(player_b_raw)
+
+    score = row.get("score", "")
+    player_a_sets = 0
+    player_b_sets = 0
+    if " - " in score:
+        parts = score.split(" - ", 1)
+        player_a_sets = int(parts[0]) if parts[0].isdigit() else 0
+        player_b_sets = int(parts[1]) if parts[1].isdigit() else 0
+
+    result = row.get("result", "")
+    winner_name = row.get("winner", "")
+    if not winner_name:
+        if result.upper() == "WON":
+            winner_name = player_a_name
+        elif result.upper() == "LOST":
+            winner_name = player_b_name
+
+    result_dict = {
         "tournament": row.get("tournament", ""),
+        "year": row.get("year", ""),
+        "player_a": player_a_raw,
+        "player_a_name": player_a_name,
+        "player_a_country": player_a_country,
+        "player_b": player_b_raw,
+        "player_b_name": player_b_name,
+        "player_b_country": player_b_country,
         "event_type": row.get("event_type", ""),
         "stage": row.get("stage", ""),
         "round": row.get("round", ""),
-        "score": row.get("score", ""),
-        "result": row.get("result", ""),
+        "score": score,
+        "player_a_sets": player_a_sets,
+        "player_b_sets": player_b_sets,
+        "detailed_sets": row.get("detailed_sets", ""),
+        "result": result,
+        "winner": winner_name,
     }
+
+    # Preserve extra fields from the parser (e.g. player_ittf_id, player_rank)
+    for key in ("player_ittf_id", "player_rank"):
+        if key in row:
+            result_dict[key] = row[key]
+
+    return result_dict
 
 
 def save_import_file(data: dict[str, Any], name: str) -> Path:

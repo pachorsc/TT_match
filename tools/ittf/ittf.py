@@ -10,9 +10,11 @@ Usage:
     python ittf.py preview <filename>
 """
 
+import json
 import re
 import sys
-from datetime import date
+import time
+from datetime import date, timedelta
 
 import click
 
@@ -30,10 +32,12 @@ from importer import (
     list_import_files,
     load_import_file,
     save_import_file,
+    transform_match,
     transform_ranking,
 )
 from parser import (
     parse_pagination_info,
+    parse_player_matches,
     parse_player_profile,
     parse_ranking_table,
 )
@@ -198,6 +202,191 @@ def player(player_id: int):
         match_filename = f"player_matches_{player_id}_{today}"
         save_import_file(matches_output, match_filename)
         click.echo(f"Matches saved: {IMPORT_DIR / match_filename}.json")
+
+
+@fetch.command()
+@click.option("--player-id", required=True, type=int, help="ITTF player ID")
+@click.option("--max-year", default=None, type=int, help="Only keep matches from this year onwards")
+def player_matches(player_id: int, max_year: int | None):
+    """Fetch match history for a single player from their profile page.
+
+    Filters to last 2 years by default (current year - 2).
+    """
+    session = _get_session()
+
+    url = f"{PLAYER_PROFILE_URL}?vw_profiles___player_id_raw={player_id}"
+    click.echo(f"Fetching matches for player {player_id}...")
+
+    try:
+        resp = session.get(url)
+        resp.raise_for_status()
+    except Exception as e:
+        click.echo(f"ERROR fetching player {player_id}: {e}", err=True)
+        return
+
+    all_matches = parse_player_matches(resp.text)
+    if not all_matches:
+        click.echo("  No matches found.")
+        return
+
+    current_year = date.today().year
+    min_year = max_year if max_year else current_year - 2
+
+    filtered = []
+    for m in all_matches:
+        year_str = m.get("year", "")
+        if year_str and year_str.isdigit():
+            if int(year_str) >= min_year:
+                filtered.append(m)
+        else:
+            filtered.append(m)
+
+    click.echo(f"  Total matches: {len(all_matches)}, kept (since {min_year}): {len(filtered)}")
+
+    if not filtered:
+        click.echo("  No matches within the requested time range.")
+        return
+
+    transformed = [transform_match(m) for m in filtered]
+    today = date.today().isoformat()
+    output = {
+        "source": f"ITTF player matches {player_id}",
+        "fetched_at": today,
+        "player_id": player_id,
+        "count": len(transformed),
+        "rows": transformed,
+    }
+
+    filename = f"player_matches_{player_id}_{today}"
+    filepath = save_import_file(output, filename)
+    click.echo(f"Saved: {filepath}")
+
+
+@fetch.command()
+@click.option("--gender", default="men", type=click.Choice(["men", "women"]))
+@click.option("--limit", default=100, type=int, help="Number of top players to fetch")
+@click.option("--max-year", default=None, type=int, help="Only keep matches from this year onwards")
+@click.option("--delay", default=2.0, type=float, help="Delay between player fetches (seconds)")
+@click.option("--ranking-file", default=None, type=str, help="Use existing ranking JSON file instead of fetching")
+def top100_matches(gender: str, limit: int, max_year: int | None, delay: float, ranking_file: str | None):
+    """Fetch match history for top N ranked players.
+
+    Fetches or loads the ranking, then fetches match history for each
+    player in the top N, and saves a consolidated matches file.
+    """
+    session = _get_session()
+    today = date.today().isoformat()
+    current_year = date.today().year
+    min_year = max_year if max_year else current_year - 2
+
+    # Get ranking data
+    if ranking_file:
+        click.echo(f"Loading ranking from file: {ranking_file}")
+        ranking_data = load_import_file(ranking_file)
+        players = ranking_data.get("rows", [])
+    else:
+        click.echo(f"Fetching {gender} rankings to identify top {limit} players...")
+        url_template = RANKING_URLS[gender]
+        page = 0
+        list_id = LIST_RANKING_MS if gender == "men" else LIST_RANKING_WS
+        all_rows = []
+
+        while len(all_rows) < limit:
+            offset = page * ROWS_PER_PAGE
+            url = f"{url_template}?limitstart{list_id}={offset}"
+            try:
+                resp = session.get(url)
+                resp.raise_for_status()
+            except Exception as e:
+                click.echo(f"  ERROR: {e}")
+                break
+
+            rows = parse_ranking_table(resp.text, gender=gender)
+            if not rows:
+                break
+            all_rows.extend(rows)
+            click.echo(f"  Page {page + 1}: {len(rows)} players (total: {len(all_rows)})")
+            if len(rows) < ROWS_PER_PAGE:
+                break
+            page += 1
+
+        players = all_rows[:limit]
+        # Save ranking for reference
+        ranking_output = {
+            "source": f"ITTF {gender} rankings (top {limit})",
+            "fetched_at": today,
+            "gender": gender,
+            "count": len(players),
+            "rows": [transform_ranking(r) for r in players],
+        }
+        save_import_file(ranking_output, f"rankings_{gender}_{today}_top{limit}")
+
+    click.echo(f"\nFetching matches for top {len(players)} {gender} players...")
+    all_matches: list[dict] = []
+    errors = []
+    player_count = 0
+
+    for i, player in enumerate(players):
+        ittf_id = player.get("ittf_id", "")
+        name = player.get("name", f"Player {ittf_id}")
+        rank = player.get("position", i + 1)
+
+        if not ittf_id:
+            errors.append(f"Row {i}: missing ittf_id")
+            continue
+
+        click.echo(f"  [{i + 1}/{len(players)}] Rank #{rank} - {name} (ID: {ittf_id})... ", nl=False)
+
+        try:
+            url = f"{PLAYER_PROFILE_URL}?vw_profiles___player_id_raw={ittf_id}"
+            resp = session.get(url)
+            resp.raise_for_status()
+
+            matches = parse_player_matches(resp.text)
+            filtered = []
+            for m in matches:
+                year_str = m.get("year", "")
+                if year_str and year_str.isdigit():
+                    if int(year_str) >= min_year:
+                        m["player_rank"] = rank
+                        m["player_ittf_id"] = ittf_id
+                        filtered.append(m)
+                else:
+                    m["player_rank"] = rank
+                    m["player_ittf_id"] = ittf_id
+                    filtered.append(m)
+
+            all_matches.extend(transform_match(m) for m in filtered)
+            click.echo(f"{len(filtered)} matches")
+            player_count += 1
+
+        except Exception as e:
+            click.echo(f"ERROR: {e}")
+            errors.append(f"Player {ittf_id} ({name}): {e}")
+
+        if i < len(players) - 1 and delay > 0:
+            time.sleep(delay)
+
+    click.echo(f"\nDone. {player_count} players processed, {len(all_matches)} total matches.")
+    if errors:
+        click.echo(f"Errors ({len(errors)}):")
+        for err in errors[:10]:
+            click.echo(f"  - {err}")
+
+    if all_matches:
+        output = {
+            "source": f"ITTF top {limit} {gender} matches",
+            "fetched_at": today,
+            "gender": gender,
+            "min_year": min_year,
+            "players_processed": player_count,
+            "count": len(all_matches),
+            "rows": all_matches,
+        }
+
+        filename = f"matches_{gender}_{today}_top{limit}"
+        filepath = save_import_file(output, filename)
+        click.echo(f"Saved: {filepath}")
 
 
 @cli.command()

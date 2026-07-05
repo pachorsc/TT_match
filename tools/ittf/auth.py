@@ -27,27 +27,17 @@ class IttfSession:
         })
         self._logged_in = False
 
+    KNOWN_FIELDS = {"option", "task", "return", "remember", "username", "password"}
+
     def _extract_csrf_token(self, html: str) -> tuple[str | None, str | None]:
         """Extract CSRF token and return URL from login form."""
         soup = BeautifulSoup(html, "html.parser")
         token_input = soup.find("input", {"name": "return"})
         return_url = token_input.get("value") if token_input else None
 
-        # Try multiple CSRF token locations
-        for meta in soup.find_all("meta", {"name": "csrf-token"}):
-            token = meta.get("content")
-            if token:
-                return token, return_url
-
-        for input_tag in soup.find_all("input", {"name": re.compile(r"csrf|token", re.I)}):
-            token = input_tag.get("value")
-            if token:
-                return f"{input_tag.get('name')}={token}", return_url
-
-        # Joomla sometimes uses a hidden input with a specific id
         for input_tag in soup.find_all("input", {"type": "hidden"}):
             name = input_tag.get("name", "")
-            if "token" in name.lower() or "csrf" in name.lower():
+            if name and name not in self.KNOWN_FIELDS:
                 return f"{name}={input_tag.get('value')}", return_url
 
         return None, return_url
@@ -90,11 +80,16 @@ class IttfSession:
             timeout=30,
         )
 
-        # Step 3: Verify login
-        self._logged_in = "Hi " in post_resp.text and "Juan" in post_resp.text
+        # Step 3: Verify login — Joomla redirects or shows logout link
+        self._logged_in = "logout" in post_resp.text.lower() or "task=user.logout" in post_resp.text
 
         if self._logged_in:
             self.save()
+        else:
+            soup_check = BeautifulSoup(post_resp.text, "html.parser")
+            err = soup_check.select_one(".alert, .alert-message, .error, .message")
+            if err:
+                print(f"Login error: {err.get_text(strip=True)}")
 
         return self._logged_in
 
@@ -135,11 +130,7 @@ class IttfSession:
         # Verify session is still valid
         try:
             resp = self.session.get(BASE_URL, timeout=30)
-            if "Hi " in resp.text and "Juan" in resp.text:
-                self._logged_in = True
-                return True
-            # Try login page - if already logged in, it redirects
-            if "logout" in resp.text.lower():
+            if "logout" in resp.text.lower() or "task=user.logout" in resp.text:
                 self._logged_in = True
                 return True
         except requests.RequestException:

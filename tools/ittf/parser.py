@@ -126,43 +126,107 @@ def parse_player_profile(html: str) -> dict[str, Any]:
 
 
 def _parse_match_item(match_div) -> dict[str, Any]:
-    """Parse a single match-item div."""
-    texts = match_div.get_text(separator="\n", strip=True).split("\n")
-    lines = [t.strip() for t in texts if t.strip()]
+    """Parse a single match-item div using structured span elements.
 
+    Two possible structures:
+
+    **Type A (detailed match, 9 spans):**
+        1. Tournament name (year embedded, e.g. 'Macao 2026')
+        2. Player A name with country
+        3. Player B name with country
+        4. Event type (MS, WS, XD, MD, WD, etc.)
+        5. Stage (Main Draw, Qualification)
+        6. Round (Final, SemiFinal, QuarterFinal, R16, R32, R64)
+        7. Score (e.g. '4 - 3')
+        8. Detailed set scores (e.g. '9:11 18:16 11:8...')
+        9. Result (WON or LOST)
+
+    **Type B (player-event summary, 6 spans):**
+        0. Year
+        1. Tournament name
+        2. Event type
+        3. Stage
+        4. Round
+        5. Winner name with country
+    """
+    spans = match_div.find_all("span")
     match_data: dict[str, Any] = {}
+    num_spans = len(spans)
 
-    for line in lines:
-        lower = line.lower()
+    if num_spans == 6:
+        # Type B — player-event summary
+        match_data["year"] = spans[0].get_text(strip=True)
+        match_data["tournament"] = spans[1].get_text(strip=True)
 
-        if " vs " in line:
-            players = re.split(r"\s+vs\s+", line, maxsplit=1)
-            if len(players) == 2:
-                match_data["player_a"] = players[0].strip()
-                match_data["player_b"] = players[1].strip()
+        if num_spans >= 3:
+            match_data["event_type"] = spans[2].get_text(strip=True)
+        if num_spans >= 4:
+            match_data["stage"] = spans[3].get_text(strip=True)
+        if num_spans >= 5:
+            match_data["round"] = spans[4].get_text(strip=True)
+        if num_spans >= 6:
+            match_data["winner"] = spans[5].get_text(strip=True)
+            match_data["result"] = "WON"
 
-        elif lower.startswith("ms ") or lower.startswith("ws ") or \
-                lower.startswith("jbs ") or lower.startswith("cbs ") or \
-                lower.startswith("u21ms") or lower.startswith("xd"):
-            match_data["event_type"] = line.split()[0]
-            rest = " ".join(line.split()[1:])
-            if " - " in rest:
-                parts = rest.split(" - ", 1)
-                match_data["stage"] = parts[0].strip()
-                if "|" in parts[1]:
-                    round_score = parts[1].split("|", 1)
-                    match_data["round"] = round_score[0].strip()
-                    match_data["score"] = round_score[1].strip()
-                else:
-                    match_data["score"] = parts[1].strip()
+    elif num_spans >= 3:
+        # Type A — detailed match
+        tournament_raw = spans[0].get_text(strip=True)
+        match_data["tournament"] = tournament_raw
 
-        elif "result:" in lower:
-            match_data["result"] = line.split(":", 1)[1].strip()
+        year_match = re.search(r'\b(20\d{2})\b', tournament_raw)
+        if year_match:
+            match_data["year"] = year_match.group(1)
 
-        elif "tournament:" in lower or "event:" in lower:
-            match_data["tournament"] = line.split(":", 1)[1].strip()
+        match_data["player_a"] = spans[1].get_text(strip=True)
+        match_data["player_b"] = spans[2].get_text(strip=True)
+
+        if num_spans >= 4:
+            match_data["event_type"] = spans[3].get_text(strip=True)
+        if num_spans >= 5:
+            match_data["stage"] = spans[4].get_text(strip=True)
+        if num_spans >= 6:
+            match_data["round"] = spans[5].get_text(strip=True)
+        if num_spans >= 7:
+            match_data["score"] = spans[6].get_text(strip=True)
+        if num_spans >= 8:
+            match_data["detailed_sets"] = spans[7].get_text(strip=True)
+        if num_spans >= 9:
+            result_text = spans[8].get_text(strip=True)
+            match_data["result"] = result_text
+
+            def split_player(text: str) -> tuple[str, str]:
+                m = re.match(r'^(.+?)\s*\(([^)]+)\)\s*$', text)
+                if m:
+                    return m.group(1).strip(), m.group(2).strip()
+                return text, ""
+
+            player_a_name, _ = split_player(match_data.get("player_a", ""))
+            if result_text.upper() == "WON":
+                match_data["winner"] = player_a_name
+            elif result_text.upper() == "LOST":
+                _, player_b_name = split_player(match_data.get("player_b", ""))
+                match_data["winner"] = match_data.get("player_b", "")
 
     return match_data
+
+
+def parse_player_matches(html: str) -> list[dict[str, Any]]:
+    """Parse all match items from a player profile page.
+
+    Args:
+        html: Raw HTML of the player profile page.
+
+    Returns:
+        List of match dicts with keys: tournament, year, player_a,
+        player_b, event_type, stage, round, score, detailed_sets, result, winner.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    results = []
+    for match_div in soup.select("div.match-item"):
+        match_data = _parse_match_item(match_div)
+        if match_data and match_data.get("tournament"):
+            results.append(match_data)
+    return results
 
 
 def parse_pagination_info(html: str) -> dict[str, Any]:
