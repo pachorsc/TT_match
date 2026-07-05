@@ -13,11 +13,11 @@ return new class extends Migration
         });
 
         Schema::table('tournaments', function (Blueprint $table) {
-            $table->string('ittf_id')->nullable()->unique()->after('statstt_id');
+            $table->string('ittf_id')->nullable()->unique()->after('id');
         });
 
         Schema::table('matches', function (Blueprint $table) {
-            $table->string('ittf_id')->nullable()->unique()->after('statstt_id');
+            $table->string('ittf_id')->nullable()->unique()->after('id');
         });
     }
 

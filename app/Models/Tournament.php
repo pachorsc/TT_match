@@ -13,7 +13,6 @@ final class Tournament extends Model
     use HasFactory;
 
     protected $fillable = [
-        'statstt_id',
         'ittf_id',
         'name',
         'location',

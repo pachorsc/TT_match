@@ -96,7 +96,7 @@ class WttMatchImportService
 
         $documentCode = $match['document_code'] ?? '';
 
-        $existing = GameMatch::where('statstt_id', $documentCode)->first();
+        $existing = GameMatch::where('ittf_id', $documentCode)->first();
 
         $matchData = [
             'tournament_id' => $tournamentId,
@@ -113,7 +113,7 @@ class WttMatchImportService
         if ($existing) {
             $existing->update($matchData);
         } else {
-            $existing = GameMatch::create(array_merge($matchData, ['statstt_id' => $documentCode]));
+            $existing = GameMatch::create(array_merge($matchData, ['ittf_id' => $documentCode]));
         }
 
         $this->importMatchSets($existing->id, $match['game_scores'] ?? '');

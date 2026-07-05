@@ -13,7 +13,6 @@ final class Player extends Model
     use HasFactory;
 
     protected $fillable = [
-        'statstt_id',
         'wtt_id',
         'ittf_id',
         'first_name',
