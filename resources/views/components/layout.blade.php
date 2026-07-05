@@ -7,7 +7,7 @@
     <title>{{ $title ?? config('app.name', 'TT Match') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,800" rel="stylesheet" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -20,10 +20,31 @@
         })();
     </script>
 </head>
-<body class="bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-white min-h-screen font-sans antialiased transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-6 py-10">
-        <header class="flex items-center justify-end mb-8">
-            <x-theme-toggle />
+<body class="bg-[#070707] text-white min-h-screen font-sans antialiased selection:bg-sport-500/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <header class="flex items-center justify-between mb-8 sm:mb-12 pb-4 border-b border-white/[0.06]">
+            <a href="{{ route('home') }}" class="flex items-center gap-2.5 group">
+                <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-sport-500/20 border border-sport-500/30 text-sport-400 font-bold text-sm transition-all duration-300 group-hover:bg-sport-500/30 group-hover:border-sport-500/50">TT</span>
+                <span class="text-base font-bold tracking-tight text-white/90 group-hover:text-white transition-colors duration-200">Match</span>
+            </a>
+
+            @php
+                $currentRoute = request()->route() ? request()->route()->getName() : '';
+            @endphp
+
+            <nav class="flex items-center gap-1 sm:gap-2">
+                <a href="{{ route('home') }}"
+                   class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
+                   {{ $currentRoute === 'home' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
+                    Partidos
+                </a>
+                <span class="px-3.5 py-2 rounded-xl text-sm font-semibold text-white/20 cursor-not-allowed select-none">
+                    Predicción
+                </span>
+                <div class="ml-2 pl-2 border-l border-white/[0.06]">
+                    <x-theme-toggle />
+                </div>
+            </nav>
         </header>
         {{ $slot }}
     </div>

@@ -9,5 +9,99 @@
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+        'Segoe Symbol', 'Noto Color Emoji';
+
+    --color-sport-50: #eff6ff;
+    --color-sport-100: #dbeafe;
+    --color-sport-200: #bfdbfe;
+    --color-sport-300: #93c5fd;
+    --color-sport-400: #60a5fa;
+    --color-sport-500: #3b82f6;
+    --color-sport-600: #2563eb;
+    --color-sport-700: #1d4ed8;
+    --color-sport-800: #1e40af;
+    --color-sport-900: #1e3a8a;
+
+    --color-surface: rgba(255, 255, 255, 0.03);
+    --color-surface-hover: rgba(255, 255, 255, 0.06);
+    --color-surface-active: rgba(255, 255, 255, 0.1);
+    --color-border-subtle: rgba(255, 255, 255, 0.06);
+    --color-border-hover: rgba(255, 255, 255, 0.12);
+    --color-border-accent: rgba(59, 130, 246, 0.3);
+
+    --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06);
+    --shadow-card-hover: 0 0 0 1px rgba(59, 130, 246, 0.3), 0 4px 24px rgba(59, 130, 246, 0.1);
+    --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+@layer utilities {
+    .card-glass {
+        @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-[2px] transition-all duration-300;
+    }
+
+    .card-glass:hover {
+        @apply border-white/[0.15] bg-white/[0.05];
+    }
+
+    .card-glass-accent {
+        @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-[2px] transition-all duration-300;
+    }
+
+    .card-glass-accent:hover {
+        @apply border-sport-500/30 bg-white/[0.06];
+        box-shadow: 0 4px 24px rgba(59, 130, 246, 0.08);
+    }
+
+    .badge-glass {
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-white/10 text-white/70 border-white/10;
+    }
+
+    .badge-amber-glass {
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-amber-500/20 text-amber-400 border-amber-500/30;
+    }
+
+    .badge-blue-glass {
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-sport-500/20 text-sport-400 border-sport-500/30;
+    }
+
+    .badge-green-glass {
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-emerald-500/20 text-emerald-400 border-emerald-500/30;
+    }
+
+    .badge-red-glass {
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-red-500/20 text-red-400 border-red-500/30;
+    }
+
+    .text-accent {
+        @apply text-sport-400;
+    }
+
+    .text-accent-hover {
+        @apply hover:text-sport-400 transition-colors duration-200;
+    }
+
+    .link-accent {
+        @apply text-white/70 hover:text-sport-400 transition-colors duration-200;
+    }
+
+    .glow-border {
+        @apply transition-all duration-300;
+    }
+
+    .glow-border:hover {
+        border-color: rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.06);
+    }
+
+    .section-heading {
+        @apply text-xs font-bold uppercase tracking-[0.12em] text-white/40;
+    }
+
+    .stat-value {
+        @apply font-bold text-white;
+    }
+
+    .stat-label {
+        @apply text-[11px] font-semibold uppercase tracking-wider text-white/40;
+    }
 }

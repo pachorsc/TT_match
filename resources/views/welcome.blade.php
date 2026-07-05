@@ -1,9 +1,9 @@
 <x-layout title="TT Match — Table Tennis Match Preview">
 
-    <div class="space-y-8">
+    <div class="space-y-8 sm:space-y-10">
         <div class="text-center space-y-2">
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Match Preview</h1>
-            <p class="text-gray-500 dark:text-white/50">Select a match to view the full preview</p>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Partidos</h1>
+            <p class="text-sm sm:text-base text-white/40">Select a match to view the details</p>
         </div>
 
         @if($matches->isEmpty())
@@ -11,34 +11,63 @@
         @else
             <div class="grid grid-cols-1 gap-3">
                 @foreach($matches as $match)
-                    <a href="{{ route('matches.preview', $match->id) }}"
-                       class="group flex items-center justify-between rounded-2xl bg-gray-50 border border-gray-200 dark:bg-white/[0.03] dark:border-white/[0.06] p-5 transition-all duration-200 hover:border-gray-300 dark:hover:border-white/[0.12] hover:bg-gray-100 dark:hover:bg-white/[0.05]">
+                    @php
+                        $winnerId = $match->winner_id;
+                    @endphp
+                    <a href="{{ route('matches.show', $match->id) }}"
+                       class="group relative card-glass-accent overflow-hidden">
 
-                        <div class="flex items-center gap-6">
-                            <div class="text-right min-w-[140px]">
-                                <p class="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{{ $match->playerA->full_name }}</p>
-                                <p class="text-xs text-gray-400 dark:text-white/40">{{ $match->playerA->country_code }} @if($match->playerA->world_ranking)#{{ $match->playerA->world_ranking }}@endif</p>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 sm:p-6 gap-4 sm:gap-6">
+                            <div class="flex items-center gap-4 sm:gap-6 flex-1 min-w-0">
+                                <div class="text-right min-w-0 flex-1 sm:flex-none sm:w-[160px]">
+                                    <p class="font-bold text-sm sm:text-base text-white/90 group-hover:text-sport-400 transition-colors duration-200 truncate">
+                                        {{ $match->playerA->full_name }}
+                                    </p>
+                                    <p class="text-xs text-white/30 mt-0.5">
+                                        {{ $match->playerA->country_code }}
+                                        @if($match->playerA->world_ranking) · #{{ $match->playerA->world_ranking }}@endif
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-col items-center shrink-0">
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="text-xl sm:text-2xl font-black {{ $winnerId && $winnerId === $match->player_a_id ? 'text-emerald-400' : 'text-white/70' }}">
+                                            {{ $match->player_a_sets }}
+                                        </span>
+                                        <span class="text-xs font-semibold text-white/20">—</span>
+                                        <span class="text-xl sm:text-2xl font-black {{ $winnerId && $winnerId === $match->player_b_id ? 'text-emerald-400' : 'text-white/70' }}">
+                                            {{ $match->player_b_sets }}
+                                        </span>
+                                    </div>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-white/20 mt-0.5">VS</span>
+                                </div>
+
+                                <div class="min-w-0 flex-1 sm:flex-none sm:w-[160px]">
+                                    <p class="font-bold text-sm sm:text-base text-white/90 group-hover:text-sport-400 transition-colors duration-200 truncate">
+                                        {{ $match->playerB->full_name }}
+                                    </p>
+                                    <p class="text-xs text-white/30 mt-0.5">
+                                        {{ $match->playerB->country_code }}
+                                        @if($match->playerB->world_ranking) · #{{ $match->playerB->world_ranking }}@endif
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="flex flex-col items-center gap-1">
-                                <span class="text-xs font-bold text-gray-400 dark:text-white/30 uppercase">{{ $match->player_a_sets }} — {{ $match->player_b_sets }}</span>
-                                <span class="text-[10px] text-gray-300 dark:text-white/20 font-semibold">VS</span>
+                            <div class="hidden sm:flex flex-col items-end shrink-0">
+                                <p class="text-sm font-semibold text-white/50">{{ $match->tournament->name }}</p>
+                                <p class="text-xs text-white/30 mt-0.5">{{ $match->match_date->format('M d, Y') }} · {{ $match->round }}</p>
                             </div>
 
-                            <div class="min-w-[140px]">
-                                <p class="font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{{ $match->playerB->full_name }}</p>
-                                <p class="text-xs text-gray-400 dark:text-white/40">{{ $match->playerB->country_code }} @if($match->playerB->world_ranking)#{{ $match->playerB->world_ranking }}@endif</p>
-                            </div>
+                            <svg class="hidden sm:block w-5 h-5 text-white/20 group-hover:text-sport-400/60 transition-all duration-200 group-hover:translate-x-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
                         </div>
 
-                        <div class="text-right">
-                            <p class="text-sm font-semibold text-gray-500 dark:text-white/60">{{ $match->tournament->name }}</p>
-                            <p class="text-xs text-gray-400 dark:text-white/40">{{ $match->match_date->format('M d, Y') }} · {{ $match->round }}</p>
+                        {{-- Mobile-only bottom row --}}
+                        <div class="sm:hidden flex items-center justify-between px-5 pb-4 pt-0">
+                            <p class="text-xs text-white/40">{{ $match->tournament->name }}</p>
+                            <p class="text-xs text-white/30">{{ $match->match_date->format('M d, Y') }} · {{ $match->round }}</p>
                         </div>
-
-                        <svg class="w-5 h-5 text-gray-300 dark:text-white/20 group-hover:text-gray-500 dark:group-hover:text-white/40 transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                        </svg>
                     </a>
                 @endforeach
             </div>
