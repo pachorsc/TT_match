@@ -162,10 +162,16 @@ class IttfImportService
                 $year = $row['year'] ?? date('Y');
                 $matchDate = "{$year}-07-01";
 
+                // Sort player IDs so the same match always generates the same key
+                // regardless of which player's perspective it was scraped from
+                $sortedIds = [$playerAId, $playerBId];
+                sort($sortedIds, SORT_NUMERIC);
+
                 $dedupKey = md5(
                     $tournamentId.
-                    $playerAId.
-                    $playerBId.
+                    $sortedIds[0].
+                    $sortedIds[1].
+                    ($row['event_type'] ?? '').
                     ($row['round'] ?? '').
                     $matchDate
                 );

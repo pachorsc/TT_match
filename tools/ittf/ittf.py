@@ -15,6 +15,7 @@ import re
 import sys
 import time
 from datetime import date, timedelta
+from pathlib import Path
 
 import click
 
@@ -31,6 +32,16 @@ from config import (
     RANKING_URLS,
     ROWS_PER_PAGE,
 )
+
+CREDENTIALS_PATH = Path(__file__).parent / "credentials.json"
+
+
+def _load_credentials() -> dict | None:
+    """Load credentials from credentials.json if it exists."""
+    if CREDENTIALS_PATH.exists():
+        data = json.loads(CREDENTIALS_PATH.read_text())
+        return {"username": data.get("username", ""), "password": data.get("password", "")}
+    return None
 from importer import (
     list_import_files,
     load_import_file,
@@ -60,19 +71,40 @@ def _get_session(require_login: bool = True) -> IttfSession:
         click.echo("Session restored from disk.")
         return session
 
-    if require_login:
-        click.echo("No saved session found.", err=True)
-        click.echo("Run: python ittf.py login --username ... --password ...", err=True)
-        sys.exit(1)
+    if not require_login:
+        return session
 
-    return session
+    # Try auto-login from credentials.json
+    creds = _load_credentials()
+    if creds and creds["username"] and creds["password"]:
+        click.echo("No saved session. Auto-login from credentials.json...")
+        success = session.login(creds["username"], creds["password"])
+        if success:
+            click.echo("Auto-login successful!")
+            return session
+
+    click.echo("No saved session found.", err=True)
+    click.echo("Run: python ittf.py login --username ... --password ...", err=True)
+    sys.exit(1)
 
 
 @cli.command()
-@click.option("--username", prompt=True, help="ITTF portal username")
-@click.option("--password", prompt=True, hide_input=True, help="ITTF portal password")
+@click.option("--username", default=None, help="ITTF portal username (default: from credentials.json)")
+@click.option("--password", default=None, hide_input=True, help="ITTF portal password (default: from credentials.json)")
 def login(username: str, password: str):
     """Login to the ITTF results portal and save session."""
+    # Load from credentials.json if not provided
+    if not username or not password:
+        creds = _load_credentials()
+        if creds:
+            username = username or creds["username"]
+            password = password or creds["password"]
+
+    if not username or not password:
+        click.echo("Username and password are required.", err=True)
+        click.echo("Provide via --username/--password or create tools/ittf/credentials.json", err=True)
+        sys.exit(1)
+
     session = IttfSession()
     click.echo(f"Logging in as '{username}'...")
     success = session.login(username, password)

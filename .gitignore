@@ -22,3 +22,5 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/tools/ittf/credentials.json
+/tools/ittf/storage/
