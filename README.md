@@ -85,11 +85,11 @@ YOUTUBE_API_KEY=tu_clave_de_youtube_aqui
 > **YouTube Data API v3**: Crea un proyecto en https://console.cloud.google.com/apis/credentials, habilita la YouTube Data API v3 y genera una clave API. Sin esto, la búsqueda de vídeos devolverá resultados vacíos (el resto de la app funcionará igual).
 
 ```
-WTT_API_KEY=2bf8b222-532c-4c60-8ebe-eb6fdfebe84a
-WTT_SEC_API_KEY=S_WTT_882jjh7basdj91834783mds8j2jsd81
+WTT_API_KEY=tu_clave_api_de_wtt
+WTT_SEC_API_KEY=tu_clave_secundaria_de_wtt
 ```
 
-> **API Gateway de la WTT**: Estas claves se encuentran en el código fuente del sitio web de World Table Tennis y son de acceso público. Son necesarias para importar rankings. Puedes obtenerlas inspeccionando las peticiones de red en https://www.worldtabletennis.com.
+> **API Gateway de la WTT**: Estas claves se encuentran en el código fuente del sitio web de World Table Tennis (worldtabletennis.com). Son necesarias para importar rankings. Puedes obtenerlas inspeccionando las peticiones de red en el sitio web.
 
 ### 9. Ejecutar migraciones y seeders
 
