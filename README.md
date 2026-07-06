@@ -2,9 +2,18 @@
 
 A desktop-first web application that displays all relevant factual information about two table tennis players before a match. Built for coaches, analysts, commentators, and table tennis enthusiasts.
 
+## Features
+
+- **Home Page** — Stats overview with match, player, and tournament counts
+- **Match Preview** — Full pre-match view with player matchup, stats, last 7 matches, head-to-head, and YouTube videos
+- **Match Detail** — Final result with set-by-set breakdown
+- **Player Comparison** — Side-by-side comparison with gender filter, search, H2H, and ranking history
+- **YouTube Videos** — Search and browse WTT official channel videos per player
+- Data imported from ITTF and WTT APIs via automated pipelines
+
 ## Purpose
 
-This application presents match preview data in a clean, modern, sports-analytics aesthetic. It displays player profiles, recent match history, head-to-head records, and related news — all factual information with no predictions or betting content.
+This application presents match preview data in a clean, modern, sports-analytics aesthetic. It displays player profiles, recent match history, head-to-head records, and YouTube videos from the WTT official channel — all factual information with no predictions or betting content.
 
 ## Technologies
 
@@ -19,7 +28,8 @@ This application presents match preview data in a clean, modern, sports-analytic
 ## Folder Structure
 
 ```
-tt-match-preview/
+TT_match/
+├── .agents/                 # AI agent skills
 ├── app/
 │   ├── Console/              # Artisan commands
 │   ├── Exceptions/           # Custom exceptions
@@ -28,12 +38,12 @@ tt-match-preview/
 │   │   ├── Middleware/        # HTTP middleware
 │   │   └── Requests/         # Form Requests
 │   ├── Models/               # Eloquent models
-│   ├── Services/             # Business logic
-│   └── View/                 # Blade components
+│   └── Services/             # Business logic
 ├── database/
 │   ├── factories/            # Model factories
 │   ├── migrations/           # Database migrations
 │   └── seeders/              # Database seeders
+├── linkedin-posts/           # LinkedIn post scripts
 ├── resources/
 │   ├── css/                  # Stylesheets
 │   ├── js/                   # JavaScript
@@ -41,17 +51,18 @@ tt-match-preview/
 │       ├── components/       # Reusable Blade components
 │       └── pages/            # Page templates
 ├── routes/                   # Route definitions
-├── scripts/                  # Python scripts
-│   ├── scrapers/             # Data scrapers
-│   ├── etl/                  # ETL pipelines
-│   └── utils/                # Utility scripts
 ├── tests/                    # PHPUnit tests
+├── tools/                    # Python scripts (scraping, ETL)
+│   ├── ittf/                 # ITTF data scraping and import
+│   ├── wtt_ranking/          # WTT ranking scraper
+│   └── wtt_matches/          # WTT match scraper
 ├── AGENTS.md                 # AI agent instructions
 ├── CODING_STANDARDS.md       # Coding standards
 ├── DOMAIN.md                 # Domain model
 ├── PROJECT.md                # Project overview
 ├── README.md                 # This file
 ├── ROADMAP.md                # Development roadmap
+├── SCHEDULE.md               # Cron job configuration
 ├── TECH_STACK.md             # Technology stack
 └── UI_GUIDELINES.md          # UI design guidelines
 ```
@@ -94,7 +105,7 @@ tt-match-preview/
    php artisan key:generate
    ```
 
-6. Configure database in `.env`:
+6. Configure database and YouTube API key in `.env`:
    ```
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
@@ -102,6 +113,8 @@ tt-match-preview/
    DB_DATABASE=tt_match_preview
    DB_USERNAME=root
    DB_PASSWORD=
+
+   YOUTUBE_API_KEY=your_youtube_api_key_here
    ```
 
 7. Run migrations and seeders:

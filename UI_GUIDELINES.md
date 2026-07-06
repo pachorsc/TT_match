@@ -80,13 +80,15 @@ Desktop-first. Premium. Minimal. Modern sports analytics aesthetic.
 - Clean table format
 - Graceful fallback message when no data exists
 
-### News Cards
+### Video Cards
 
-- Modern card design
-- Headline prominently displayed
-- Summary text with appropriate line clamping
-- Publication date and source clearly shown
-- Consistent card sizing
+- Thumbnail image from YouTube with play overlay
+- Video title truncated with line clamping
+- Publication date clearly shown
+- Consistent card sizing in a responsive grid
+- Graceful fallback when no videos are available (empty state with icon)
+- Loading state with spinner while fetching from YouTube API
+- Error state with retry messaging if API call fails
 
 ## Visual Elements to NEVER Include
 

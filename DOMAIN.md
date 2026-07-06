@@ -9,26 +9,31 @@ Represents a table tennis player.
 | Field | Type | Description |
 |---|---|---|
 | id | bigint | Primary key |
+| wtt_id | string | World Table Tennis ID (nullable) |
+| ittf_id | string | ITTF ID (nullable) |
 | first_name | string | Player first name |
 | last_name | string | Player last name |
-| full_name | string | Computed full name |
+| gender | string | M or F |
 | country | string | Country of origin |
 | country_code | string | ISO country code (for flag display) |
-| date_of_birth | date | Player date of birth |
+| date_of_birth | date | Player date of birth (nullable) |
 | height_cm | integer | Height in centimeters (nullable) |
-| dominant_hand | enum | Left, Right |
-| playing_style | enum | Offensive, Defensive, All-round (nullable) |
+| dominant_hand | string | Left or Right (nullable) |
+| playing_style | string | Offensive, Defensive, All-round (nullable) |
 | world_ranking | integer | Current ITTF world ranking (nullable) |
 | rating_points | integer | Current rating points (nullable) |
 | created_at | timestamp | Record creation time |
 | updated_at | timestamp | Record last update time |
 
+**Computed attributes:**
+- `full_name` — accessor that concatenates first_name and last_name
+
 **Rules:**
 - A player must have a first name and last name
 - A player must have a country and country code
-- A player must have a date of birth
+- Gender must be M or F
 - World ranking and rating points may be null if not yet ranked
-- Playing style may be null if not available
+- Playing style, dominant hand, height, date of birth may be null if not available
 
 ---
 
@@ -39,6 +44,7 @@ Represents a table tennis tournament or competition.
 | Field | Type | Description |
 |---|---|---|
 | id | bigint | Primary key |
+| ittf_id | string | ITTF tournament ID (nullable) |
 | name | string | Tournament name |
 | location | string | Host city or venue |
 | country | string | Host country |
@@ -63,6 +69,7 @@ Represents a table tennis match between two players.
 | Field | Type | Description |
 |---|---|---|
 | id | bigint | Primary key |
+| ittf_id | string | ITTF match ID (nullable) |
 | tournament_id | bigint | Foreign key to tournaments |
 | player_a_id | bigint | Foreign key to players (Player A) |
 | player_b_id | bigint | Foreign key to players (Player B) |
@@ -72,7 +79,7 @@ Represents a table tennis match between two players.
 | match_date | date | Date the match was played |
 | match_time | time | Time the match started (nullable) |
 | round | string | Tournament round (e.g., Quarterfinal, Semifinal, Final) |
-| status | enum | Scheduled, Completed, Walkover, Cancelled |
+| status | string | Scheduled, Completed, Walkover, Cancelled |
 | created_at | timestamp | Record creation time |
 | updated_at | timestamp | Record last update time |
 
@@ -133,30 +140,6 @@ Represents a player's ranking at a specific point in time.
 
 ---
 
-### News
-
-Represents a news article related to a player or match.
-
-| Field | Type | Description |
-|---|---|---|
-| id | bigint | Primary key |
-| player_id | bigint | Foreign key to players (nullable, null for general news) |
-| headline | string | Article headline |
-| summary | text | Article summary or excerpt |
-| source | string | Publication name |
-| url | string | Full article URL |
-| published_at | timestamp | Publication date and time |
-| created_at | timestamp | Record creation time |
-| updated_at | timestamp | Record last update time |
-
-**Rules:**
-- A news article must have a headline, summary, source, and URL
-- published_at is used for chronological ordering
-- player_id is nullable for general table tennis news
-- News is displayed in reverse chronological order (newest first)
-
----
-
 ## Entity Relationships
 
 ```
@@ -166,7 +149,6 @@ Player 1──* Match (as Winner)
 Tournament 1──* Match
 Match 1──* MatchSet
 Player 1──* Ranking
-Player 1──* News
 ```
 
 ## Business Rules Summary
@@ -175,13 +157,13 @@ Player 1──* News
 2. **Head to Head:** Only shows matches from the last two years between the same two players
 3. **Last 7 Matches:** Shows the most recent 7 completed matches for each player
 4. **Ranking History:** Rankings are tracked over time to show player progression
-5. **News Display:** Only the most recent news articles are shown, sorted by publication date
+5. **YouTube Videos:** Videos from the WTT official channel are fetched per player via the YouTube API and displayed as embed cards
 6. **Data Completeness:** Some fields are nullable (playing style, height, match time) to accommodate incomplete data
 
 ## Terminology
 
 | Term | Definition |
-|---|---|
+|---|---|---|
 | Player A | The first player listed in a match matchup |
 | Player B | The second player listed in a match matchup |
 | Sets | Best-of format matches (typically best of 5 or 7) |
@@ -189,3 +171,4 @@ Player 1──* News
 | World Ranking | Official ITTF world ranking position |
 | Head to Head | Historical match record between two specific players |
 | Match Preview | The pre-match informational display |
+| Video | YouTube video from the WTT official channel embedded per player |
