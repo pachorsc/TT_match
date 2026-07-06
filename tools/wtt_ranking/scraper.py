@@ -9,6 +9,7 @@ Usage:
 """
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -23,10 +24,10 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # WTT API Gateway endpoint (no brotli compression needed)
 API_BASE = "https://wttcmsapigateway-new.azure-api.net/internalttu/RankingsCurrentWeek/CurrentWeek/GetRankingIndividuals"
 
-# API keys (public, found in WTT website source code)
+# API keys — set via environment variables (see .env.example)
 API_KEYS = {
-    "apikey": "REPLACED_WITH_ENV_VAR",
-    "secapimkey": "REPLACED_WITH_ENV_VAR",
+    "apikey": os.getenv("WTT_API_KEY", ""),
+    "secapimkey": os.getenv("WTT_SEC_API_KEY", ""),
 }
 
 # Country code mapping (3-letter → 2-letter ISO)

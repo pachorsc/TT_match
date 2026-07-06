@@ -19,11 +19,6 @@ class ImportWttRanking extends Command
 
     private const API_BASE = 'https://wttcmsapigateway-new.azure-api.net/internalttu/RankingsCurrentWeek/CurrentWeek/GetRankingIndividuals';
 
-    private const API_KEYS = [
-        'apikey' => 'REPLACED_WITH_ENV_VAR',
-        'secapimkey' => 'REPLACED_WITH_ENV_VAR',
-    ];
-
     private const COUNTRY_MAP = [
         'CHN' => ['code' => 'CN', 'name' => 'China'],
         'JPN' => ['code' => 'JP', 'name' => 'Japan'],
@@ -161,11 +156,13 @@ class ImportWttRanking extends Command
 
             $url = self::API_BASE.'?CategoryCode=SEN&SubEventCode='.$subEventCode.'&StartRank='.$startRank.'&EndRank='.$endRank.'&q=1';
 
-            $response = Http::withHeaders(array_merge(self::API_KEYS, [
+            $response = Http::withHeaders([
+                'apikey' => config('services.wtt.api_key'),
+                'secapimkey' => config('services.wtt.sec_api_key'),
                 'Origin' => 'https://www.worldtabletennis.com',
                 'Referer' => 'https://www.worldtabletennis.com/',
                 'Accept-Language' => 'en-US,en;q=0.9',
-            ]))->timeout(30)->get($url);
+            ])->timeout(30)->get($url);
 
             if (! $response->successful()) {
                 throw new \RuntimeException("HTTP {$response->status()} at ranks {$startRank}-{$endRank}");

@@ -40,4 +40,9 @@ return [
         'channel_id' => env('YOUTUBE_CHANNEL_ID', 'UC9ckyA_A3MfXUa0ttxMoIZw'),
     ],
 
+    'wtt' => [
+        'api_key' => env('WTT_API_KEY'),
+        'sec_api_key' => env('WTT_SEC_API_KEY'),
+    ],
+
 ];

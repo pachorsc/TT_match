@@ -14,6 +14,7 @@ Usage:
 
 import argparse
 import json
+import os
 import re
 import sys
 import time
@@ -367,7 +368,11 @@ def main():
 
     # Connect to database
     conn = mysql.connector.connect(
-        host="127.0.0.1", port=3306, user="root", password="", database="tt_match"
+        host=os.getenv("DB_HOST", "127.0.0.1"),
+        port=int(os.getenv("DB_PORT", "3306")),
+        user=os.getenv("DB_USERNAME", "root"),
+        password=os.getenv("DB_PASSWORD", ""),
+        database=os.getenv("DB_DATABASE", "tt_match"),
     )
 
     # Get all players with ITTF IDs
