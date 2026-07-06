@@ -25,9 +25,15 @@
     </div>
 
     {{-- Matches --}}
-    <div class="divide-y divide-white/[0.04]">
-        @foreach($matches as $i => $match)
-            <x-match-row :match="$match" :index="$startIndex + $i" />
-        @endforeach
-    </div>
+    @if($matches->isEmpty())
+        <div class="px-6 py-8 text-center text-sm text-white/30">
+            No matches found for this tournament.
+        </div>
+    @else
+        <div class="divide-y divide-white/[0.04]">
+            @foreach($matches as $i => $match)
+                <x-match-row :match="$match" :index="$startIndex + $i" />
+            @endforeach
+        </div>
+    @endif
 </div>

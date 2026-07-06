@@ -19,24 +19,27 @@ final class PlayerService
 
     public function getPlayerStats(Player $player): array
     {
-        $totalMatches = GameMatch::completed()
+        $result = GameMatch::completed()
             ->where(fn ($q) => $q
                 ->where('player_a_id', $player->id)
                 ->orWhere('player_b_id', $player->id)
             )
-            ->count();
+            ->selectRaw('
+                COUNT(*) as total_matches,
+                SUM(CASE WHEN winner_id = ? THEN 1 ELSE 0 END) as wins
+            ', [$player->id])
+            ->first();
 
-        $wins = $player->wonMatches()->completed()->count();
-
-        $winRate = $totalMatches > 0
-            ? round(($wins / $totalMatches) * 100, 1)
-            : 0.0;
+        $totalMatches = (int) $result->total_matches;
+        $wins = (int) $result->wins;
 
         return [
             'total_matches' => $totalMatches,
             'wins' => $wins,
             'losses' => $totalMatches - $wins,
-            'win_rate' => $winRate,
+            'win_rate' => $totalMatches > 0
+                ? round(($wins / $totalMatches) * 100, 1)
+                : 0.0,
         ];
     }
 
@@ -50,7 +53,7 @@ final class PlayerService
     public function getLast7Matches(Player $player): Collection
     {
         return GameMatch::completed()
-            ->with(['tournament', 'playerA', 'playerB', 'winner', 'sets'])
+            ->with(['tournament', 'playerA', 'playerB', 'winner'])
             ->where(fn ($q) => $q
                 ->where('player_a_id', $player->id)
                 ->orWhere('player_b_id', $player->id)

@@ -31,7 +31,7 @@
 
         <div class="space-y-1">
             <span class="stat-label">Age</span>
-            <p class="font-semibold text-white/70">{{ $player->date_of_birth->age }} yrs</p>
+            <p class="font-semibold text-white/70">{{ $player->date_of_birth ? $player->date_of_birth->age . ' yrs' : '—' }}</p>
         </div>
 
         <div class="space-y-1">
@@ -42,7 +42,7 @@
 
     @if($stats)
         <div class="pt-4 border-t border-white/[0.06]">
-            <div class="grid grid-cols-4 gap-3 text-center">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                 <div>
                     <p class="stat-value text-lg">{{ $stats['total_matches'] }}</p>
                     <span class="stat-label mt-0.5 block">Matches</span>

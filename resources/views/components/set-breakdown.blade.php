@@ -1,11 +1,11 @@
 @props(['sets', 'playerA', 'playerB'])
 
 @if($sets->isEmpty())
-    <div class="max-w-xs mx-auto card-glass px-4 py-6 text-center">
-        <p class="text-sm text-white/40">No set data available.</p>
+    <div class="max-w-xs mx-auto">
+        <x-empty-state message="No set data available." />
     </div>
 @else
-    <div class="max-w-xs mx-auto card-glass overflow-hidden">
+    <div class="max-w-xs sm:max-w-sm mx-auto card-glass overflow-hidden">
         {{-- Header --}}
         <div class="grid grid-cols-[40px_1fr_48px_1fr] items-center px-4 py-2.5 border-b border-white/[0.06]">
             <span class="text-[10px] font-bold uppercase tracking-[0.12em] text-white/30">Set</span>

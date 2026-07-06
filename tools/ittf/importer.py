@@ -29,13 +29,19 @@ def transform_ranking(row: dict[str, Any]) -> dict[str, Any]:
 
 def transform_player(row: dict[str, Any]) -> dict[str, Any]:
     """Transform an ITTF player profile row to Laravel player import format."""
-    return {
+    result = {
         "ittf_id": row.get("ittf_id", ""),
         "name": row.get("name", ""),
         "details": row.get("details", ""),
         "career_stats": row.get("career_stats", ""),
         "ytd_stats": row.get("ytd_stats", ""),
     }
+
+    # Include birth_year if extracted by the parser
+    if "birth_year" in row:
+        result["birth_year"] = row["birth_year"]
+
+    return result
 
 
 def transform_match(row: dict[str, Any]) -> dict[str, Any]:

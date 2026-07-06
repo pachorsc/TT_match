@@ -274,7 +274,7 @@ class IttfImportService
                 'last_name' => $surname,
                 'country_code' => $cc,
                 'country' => $countryCode,
-                'date_of_birth' => '1970-01-01',
+                'date_of_birth' => null,
             ]);
 
             return $player->id;
@@ -379,11 +379,25 @@ class IttfImportService
             $countryCode = substr($countryCode, 0, 2);
         }
 
-        return [
+        $data = [
             'first_name' => $firstName,
             'last_name' => $lastName,
             'country_code' => $countryCode,
         ];
+
+        // Parse birth_year from details field if available
+        $birthYear = $row['birth_year'] ?? null;
+        if (! $birthYear) {
+            $details = $row['details'] ?? '';
+            if ($details && preg_match('/Birth Year:\s*(\d{4})/', $details, $matches)) {
+                $birthYear = (int) $matches[1];
+            }
+        }
+        if ($birthYear && $birthYear > 1900 && $birthYear < date('Y')) {
+            $data['date_of_birth'] = "{$birthYear}-01-01";
+        }
+
+        return $data;
     }
 
     private function parsePlayerName(string $fullName): array

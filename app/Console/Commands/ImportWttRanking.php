@@ -248,7 +248,7 @@ class ImportWttRanking extends Command
                 'country' => $countryInfo['name'],
                 'country_code' => $countryInfo['code'],
                 'dominant_hand' => 'Right',
-                'date_of_birth' => '2000-01-01',
+                'date_of_birth' => null,
                 'world_ranking' => $rankPosition,
                 'rating_points' => $rankPoints,
             ]);

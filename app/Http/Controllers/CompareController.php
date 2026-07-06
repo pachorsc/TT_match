@@ -9,6 +9,7 @@ use App\Services\MatchService;
 use App\Services\NewsService;
 use App\Services\PlayerService;
 use App\Services\RankingService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 final class CompareController extends Controller
@@ -43,8 +44,12 @@ final class CompareController extends Controller
         ];
 
         if ($playerAId && $playerBId && $playerAId !== $playerBId) {
-            $playerA = $this->playerService->getPlayerById((int) $playerAId);
-            $playerB = $this->playerService->getPlayerById((int) $playerBId);
+            try {
+                $playerA = $this->playerService->getPlayerById((int) $playerAId);
+                $playerB = $this->playerService->getPlayerById((int) $playerBId);
+            } catch (ModelNotFoundException) {
+                return view('pages.compare', $data);
+            }
 
             $playerAStats = $this->playerService->getPlayerStats($playerA);
             $playerBStats = $this->playerService->getPlayerStats($playerB);

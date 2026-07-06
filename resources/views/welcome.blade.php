@@ -16,16 +16,20 @@
             </div>
 
             {{-- Stats Bar --}}
-            <div class="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
-                <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalMatches }}</span>
-                <span class="text-xs text-white/30">partidos</span>
-                <span class="w-1 h-1 rounded-full bg-white/10 mx-1"></span>
-                <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalTournaments }}</span>
-                <span class="text-xs text-white/30">torneos</span>
-                <span class="w-1 h-1 rounded-full bg-white/10 mx-1"></span>
-                <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalPlayers }}</span>
-                <span class="text-xs text-white/30">jugadores</span>
-            </div>
+            @if($totalMatches > 0 || $totalTournaments > 0 || $totalPlayers > 0)
+                <div class="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+                    <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalMatches }}</span>
+                    <span class="text-xs text-white/30">partidos</span>
+                    <span class="w-1 h-1 rounded-full bg-white/10 mx-1"></span>
+                    <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalTournaments }}</span>
+                    <span class="text-xs text-white/30">torneos</span>
+                    <span class="w-1 h-1 rounded-full bg-white/10 mx-1"></span>
+                    <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalPlayers }}</span>
+                    <span class="text-xs text-white/30">jugadores</span>
+                </div>
+            @else
+                <p class="text-sm text-white/30">No data available yet. Import match data to get started.</p>
+            @endif
 
             {{-- CTA --}}
             <div class="pt-1">

@@ -104,9 +104,17 @@ def parse_player_profile(html: str) -> dict[str, Any]:
                 elif "name_raw" in cls:
                     result["profile"]["name"] = cell.get_text(strip=True)
                 elif "profile_raw" in cls or "profile" in cls:
-                    result["profile"]["details"] = cell.get_text(
-                        separator=" ", strip=True
-                    )
+                    details = cell.get_text(separator=" ", strip=True)
+                    result["profile"]["details"] = details
+                    # Extract birth_year from details like "JAPAN Gender: Female Birth Year: 2000 Age: 25 ..."
+                    # HTML format may include spans: "Birth Year: <span class='notranslate'>2000</span>"
+                    import re
+                    birth_match = re.search(r"Birth Year:\s*(?:<[^>]+>)?\s*(\d{4})", details)
+                    if birth_match:
+                        result["profile"]["birth_year"] = int(birth_match.group(1))
+                    age_match = re.search(r"Age:\s*(\d+)", details)
+                    if age_match:
+                        result["profile"]["age"] = int(age_match.group(1))
                 elif "career_stats_raw" in cls:
                     result["profile"]["career_stats"] = cell.get_text(
                         separator=" ", strip=True

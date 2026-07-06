@@ -126,12 +126,16 @@
 
                 <div class="text-center">
                     <button type="submit"
-                            class="predict-submit inline-flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ $playerA && $playerB ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30 hover:bg-sport-500/30 hover:border-sport-500/50 cursor-pointer' : 'bg-white/[0.04] text-white/20 border border-white/[0.06] cursor-not-allowed' }}
-                            {{ !$playerA || !$playerB ? 'opacity-40' : '' }}">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            class="predict-submit inline-flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ $playerA && $playerB ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30 hover:bg-sport-500/30 hover:border-sport-500/50 cursor-pointer' : 'bg-white/[0.04] text-white/20 border border-white/[0.06] cursor-not-allowed' }}"
+                            {{ !$playerA || !$playerB ? 'opacity-40' : '' }}>
+                        <svg class="w-4 h-4 predict-submit-icon" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
-                        Comparar
+                        <span class="predict-submit-text">Comparar</span>
+                        <svg class="w-4 h-4 predict-submit-spinner hidden animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
                     </button>
                 </div>
             </form>

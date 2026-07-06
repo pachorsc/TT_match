@@ -9,9 +9,7 @@
     </div>
 
     @if($matches->isEmpty())
-        <div class="px-6 py-10 text-center text-white/30 text-sm">
-            No completed matches found.
-        </div>
+        <x-empty-state message="No completed matches found." />
     @else
         <div class="overflow-x-auto">
             <table class="w-full text-sm">

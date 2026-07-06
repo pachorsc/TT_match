@@ -13,4 +13,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     initPlayerSearch();
+
+    const predictForm = document.getElementById('predict-form');
+    if (predictForm) {
+        predictForm.addEventListener('submit', function () {
+            const btn = predictForm.querySelector('.predict-submit');
+            if (btn && !btn.disabled) {
+                const icon = btn.querySelector('.predict-submit-icon');
+                const text = btn.querySelector('.predict-submit-text');
+                const spinner = btn.querySelector('.predict-submit-spinner');
+                if (icon) icon.classList.add('hidden');
+                if (text) text.textContent = 'Loading...';
+                if (spinner) spinner.classList.remove('hidden');
+                btn.disabled = true;
+                btn.classList.add('opacity-60', 'cursor-wait');
+            }
+        });
+    }
 });

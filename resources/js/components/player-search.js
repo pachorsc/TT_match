@@ -14,6 +14,14 @@ export default function initPlayerSearch() {
 
         const allItems = [...items];
 
+        let noResultsEl = dropdown.querySelector('.player-search-no-results');
+        if (!noResultsEl) {
+            noResultsEl = document.createElement('div');
+            noResultsEl.className = 'player-search-no-results px-4 py-3 text-sm text-white/30 text-center hidden';
+            noResultsEl.textContent = 'No players found';
+            dropdown.appendChild(noResultsEl);
+        }
+
         function filterItems(query) {
             const lower = query.toLowerCase();
             let visible = 0;
@@ -27,9 +35,14 @@ export default function initPlayerSearch() {
 
             if (visible > 0 && open) {
                 dropdown.classList.remove('hidden');
+                noResultsEl.classList.add('hidden');
                 highlightItem(0);
+            } else if (open) {
+                dropdown.classList.remove('hidden');
+                noResultsEl.classList.toggle('hidden', visible > 0);
             } else {
                 dropdown.classList.add('hidden');
+                noResultsEl.classList.add('hidden');
             }
 
             return visible;

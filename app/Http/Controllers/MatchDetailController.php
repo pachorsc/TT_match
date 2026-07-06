@@ -22,7 +22,7 @@ final class MatchDetailController extends Controller
             'playerA' => $match->playerA,
             'playerB' => $match->playerB,
             'winner' => $match->winner,
-            'sets' => $match->sets()->orderBy('set_number')->get(),
+            'sets' => $match->sets->sortBy('set_number'),
             'tournament' => $match->tournament,
         ]);
     }

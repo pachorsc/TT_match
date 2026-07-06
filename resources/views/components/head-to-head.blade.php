@@ -9,9 +9,7 @@
     </div>
 
     @if($headToHead['total_matches'] === 0)
-        <div class="px-6 py-10 text-center text-white/30 text-sm">
-            No head-to-head matches found in the last 2 years.
-        </div>
+        <x-empty-state message="No head-to-head matches found in the last 2 years." />
     @else
         <div class="px-5 sm:px-6 py-6 sm:py-8">
             <div class="flex items-center justify-center gap-6 sm:gap-12 mb-6">
