@@ -1,45 +1,45 @@
-# Scheduler Configuration
+# Configuración del Scheduler
 
-This project uses Laravel's scheduler for recurring data import tasks.
+Este proyecto usa el planificador de Laravel para tareas recurrentes de importación de datos.
 
-## Available Commands
+## Comandos Disponibles
 
-| Command | Description |
+| Comando | Descripción |
 |---|---|
-| `php artisan wtt:sync-matches {tournamentId}` | Sync matches for a specific tournament from WTT |
-| `php artisan wtt:import-ranking` | Import rankings from WTT API Gateway |
+| `php artisan wtt:sync-matches {tournamentId}` | Sincronizar partidos de un torneo desde la WTT |
+| `php artisan wtt:import-ranking` | Importar rankings desde la API Gateway de la WTT |
 
-## Setup
+## Configuración
 
-### 1. Verify the command works
+### 1. Verificar que el comando funciona
 
 ```bash
 php artisan wtt:sync-matches 3242
 php artisan wtt:import-ranking --gender men --limit 100
 ```
 
-### 2. Configure cron job
+### 2. Configurar cron job
 
-Add the following entry to your server's crontab:
+Agrega la siguiente entrada al crontab de tu servidor:
 
 ```cron
-* * * * * cd /path/to/your/project && php artisan schedule:run >> /dev/null 2>&1
+* * * * * cd /ruta/a/tu/proyecto && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-This runs every minute. Laravel's scheduler then determines which tasks to execute based on the schedule defined in `app/Console/Kernel.php`.
+Esto se ejecuta cada minuto. El planificador de Laravel determina qué tareas ejecutar según la programación definida en `app/Console/Kernel.php`.
 
-### 3. Verify
+### 3. Verificar
 
-Check the logs or run:
+Revisa los logs o ejecuta:
 
 ```bash
 php artisan schedule:list
 ```
 
-> **Note:** Laravel's `schedule:run` is safe to run every minute — it only executes tasks whose scheduled time has elapsed. Running it more frequently (e.g., every 5 minutes) will not cause duplicate executions.
+> **Nota:** `schedule:run` de Laravel es seguro para ejecutar cada minuto — solo ejecuta tareas cuyo tiempo programado haya vencido. Ejecutarlo con mayor frecuencia (ej. cada 5 minutos) no causará ejecuciones duplicadas.
 
-## Production Notes
+## Notas para Producción
 
-- Replace `/path/to/your/project` with the actual path on your server
-- Ensure the cron user has write permissions to `storage/logs/`
-- Set `APP_ENV=production` and `APP_DEBUG=false` in `.env` for production
+- Reemplaza `/ruta/a/tu/proyecto` con la ruta real en tu servidor
+- Asegúrate de que el usuario del cron tenga permisos de escritura en `storage/logs/`
+- Configura `APP_ENV=production` y `APP_DEBUG=false` en `.env` para producción
