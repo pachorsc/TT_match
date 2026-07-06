@@ -173,7 +173,7 @@ class IttfImportService
                 );
 
                 $year = $row['year'] ?? date('Y');
-                $matchDate = "{$year}-07-01";
+                $matchDate = "{$year}-01-01";
 
                 // Sort player IDs so the same match always generates the same key
                 // regardless of which player's perspective it was scraped from
@@ -186,7 +186,7 @@ class IttfImportService
                     $sortedIds[1].
                     ($row['event_type'] ?? '').
                     ($row['round'] ?? '').
-                    $matchDate
+                    $year
                 );
 
                 $existing = GameMatch::where('ittf_id', $dedupKey)->first();

@@ -35,6 +35,10 @@ class ImportIttf extends Command
 
         $importPath = config('ittf.import_path', storage_path('app/import/ittf'));
 
+        if ($type === 'matches') {
+            return $this->importAllMatchFiles($importPath, $file);
+        }
+
         if (! $file) {
             $file = $this->findLatestFile($importPath, $type);
             if (! $file) {
@@ -71,6 +75,86 @@ class ImportIttf extends Command
 
             return Command::FAILURE;
         }
+    }
+
+    private function importAllMatchFiles(string $importPath, ?string $specificFile): int
+    {
+        if ($specificFile) {
+            $this->info("Importing matches from: {$specificFile}");
+            $this->newLine();
+
+            try {
+                $result = $this->ittfService->importMatches($specificFile);
+                $this->displayResult($result);
+
+                return Command::SUCCESS;
+            } catch (\Exception $e) {
+                $this->error("Import failed: {$e->getMessage()}");
+
+                return Command::FAILURE;
+            }
+        }
+
+        $files = $this->findAllMatchFiles($importPath);
+
+        if (empty($files)) {
+            $this->error("No match import files found in {$importPath}");
+
+            return Command::FAILURE;
+        }
+
+        $this->info('Found '.count($files).' match files to import');
+        $this->newLine();
+
+        $totalImported = 0;
+        $totalErrors = 0;
+        $exitCode = Command::SUCCESS;
+
+        foreach ($files as $file) {
+            $this->info("  Importing: {$file}");
+            $this->newLine();
+
+            try {
+                $result = $this->ittfService->importMatches($file);
+
+                $imported = $result['imported'] ?? 0;
+                $errors = $result['errors'] ?? [];
+                $skipped = $result['skipped'] ?? 0;
+
+                $totalImported += $imported;
+                $totalErrors += count($errors);
+
+                $this->info("    Imported: {$imported}, Skipped: {$skipped}, Errors: ".count($errors));
+                $this->newLine();
+            } catch (\Exception $e) {
+                $this->error("    Failed: {$e->getMessage()}");
+                $this->newLine();
+                Log::error('ITTF match import failed', [
+                    'file' => $file,
+                    'error' => $e->getMessage(),
+                ]);
+                $totalErrors++;
+                $exitCode = Command::FAILURE;
+            }
+        }
+
+        $this->info("Done. Total imported: {$totalImported}, Total errors: {$totalErrors}");
+
+        return $exitCode;
+    }
+
+    private function findAllMatchFiles(string $path): array
+    {
+        if (! is_dir($path)) {
+            return [];
+        }
+
+        $files = glob($path.'/{matches_*.json,player_matches_*.json}', GLOB_BRACE);
+        usort($files, function ($a, $b) {
+            return filemtime($a) - filemtime($b);
+        });
+
+        return array_map('basename', $files);
     }
 
     private function findLatestFile(string $path, string $type): ?string

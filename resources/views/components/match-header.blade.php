@@ -14,7 +14,7 @@
         </div>
 
         <div class="flex flex-wrap items-center justify-center gap-3 text-sm">
-            <span class="text-white/60">{{ $match->match_date->format('d M Y') }}</span>
+            <span class="text-white/60">{{ $match->match_date->month === 1 && $match->match_date->day === 1 ? $match->match_date->format('Y') : $match->match_date->format('d M Y') }}</span>
             @if($match->match_time)
                 <span class="w-1 h-1 rounded-full bg-white/20"></span>
                 <span class="text-white/40">{{ $match->match_time }}</span>

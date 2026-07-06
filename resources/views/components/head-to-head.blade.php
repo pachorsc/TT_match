@@ -66,7 +66,7 @@
                         @foreach($headToHead['matches'] as $match)
                             <tr class="hover:bg-white/[0.02] transition-colors">
                                 <td class="px-5 sm:px-6 py-3 text-white/40">
-                                    {{ $match->match_date->format('d M Y') }}
+                                    {{ $match->match_date->month === 1 && $match->match_date->day === 1 ? $match->match_date->format('Y') : $match->match_date->format('d M Y') }}
                                 </td>
                                 <td class="px-5 sm:px-6 py-3 text-white/80">
                                     {{ $match->tournament->name }}

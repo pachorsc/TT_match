@@ -51,7 +51,7 @@
     <div class="hidden sm:flex items-center gap-4 shrink-0">
         <div class="text-right">
             <p class="text-xs font-semibold text-white/40">{{ $match->round }}</p>
-            <p class="text-[11px] text-white/25 mt-px">{{ $match->match_date->format('M d, Y') }}</p>
+            <p class="text-[11px] text-white/25 mt-px">{{ $match->match_date->month === 1 && $match->match_date->day === 1 ? $match->match_date->format('Y') : $match->match_date->format('M d, Y') }}</p>
         </div>
         <svg class="w-4 h-4 text-white/15 group-hover:text-sport-400/60 transition-all duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -61,6 +61,6 @@
     {{-- Mobile round + date --}}
     <div class="sm:hidden flex flex-col items-end shrink-0">
         <span class="text-xs text-white/40 font-semibold">{{ $match->round }}</span>
-        <span class="text-[10px] text-white/25">{{ $match->match_date->format('M d') }}</span>
+        <span class="text-[10px] text-white/25">{{ $match->match_date->month === 1 && $match->match_date->day === 1 ? $match->match_date->format('Y') : $match->match_date->format('M d') }}</span>
     </div>
 </a>
