@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Player;
 use App\Services\MatchService;
-use App\Services\NewsService;
 use App\Services\PlayerService;
 use App\Services\RankingService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -17,7 +16,6 @@ final class CompareController extends Controller
     public function __construct(
         private readonly PlayerService $playerService,
         private readonly MatchService $matchService,
-        private readonly NewsService $newsService,
         private readonly RankingService $rankingService,
     ) {}
 
@@ -40,7 +38,6 @@ final class CompareController extends Controller
             'playerAData' => null,
             'playerBData' => null,
             'headToHead' => null,
-            'news' => null,
         ];
 
         if ($playerAId && $playerBId && $playerAId !== $playerBId) {
@@ -59,8 +56,6 @@ final class CompareController extends Controller
 
             $headToHead = $this->matchService->getHeadToHead($playerA->id, $playerB->id);
 
-            $news = $this->newsService->getLatestNews(5);
-
             $data['playerA'] = $playerA;
             $data['playerB'] = $playerB;
             $data['playerAData'] = [
@@ -76,7 +71,6 @@ final class CompareController extends Controller
                 'rankingMovement' => $this->getRankingMovement($playerB),
             ];
             $data['headToHead'] = $headToHead;
-            $data['news'] = $news;
         }
 
         return view('pages.compare', $data);

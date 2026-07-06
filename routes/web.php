@@ -4,6 +4,7 @@ use App\Http\Controllers\CompareController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MatchDetailController;
 use App\Http\Controllers\MatchPreviewController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -18,3 +19,6 @@ Route::get('/matches/{match}/preview', MatchPreviewController::class)
 
 Route::get('/compare', CompareController::class)
     ->name('compare');
+
+Route::get('/videos', VideoController::class)
+    ->name('videos');

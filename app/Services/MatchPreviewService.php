@@ -12,7 +12,6 @@ final class MatchPreviewService
     public function __construct(
         private readonly PlayerService $playerService,
         private readonly MatchService $matchService,
-        private readonly NewsService $newsService,
         private readonly RankingService $rankingService,
     ) {}
 
@@ -28,8 +27,6 @@ final class MatchPreviewService
         $playerBLast7 = $this->playerService->getLast7Matches($playerB);
 
         $headToHead = $this->matchService->getHeadToHead($playerA->id, $playerB->id);
-
-        $news = $this->newsService->getLatestNews(5);
 
         $playerARankingMovement = $this->getRankingMovement($playerA);
         $playerBRankingMovement = $this->getRankingMovement($playerB);
@@ -50,7 +47,6 @@ final class MatchPreviewService
             ],
             'headToHead' => $headToHead,
             'tournament' => $match->tournament,
-            'news' => $news,
         ];
     }
 

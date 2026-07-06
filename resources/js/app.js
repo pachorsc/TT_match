@@ -1,5 +1,6 @@
 import './bootstrap';
 import initPlayerSearch from './components/player-search';
+import initVideoLoader from './components/video-loader';
 
 document.addEventListener('DOMContentLoaded', function () {
     const toggle = document.getElementById('theme-toggle');
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     initPlayerSearch();
+    initVideoLoader();
 
     const predictForm = document.getElementById('predict-form');
     if (predictForm) {

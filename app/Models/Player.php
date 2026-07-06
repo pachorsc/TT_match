@@ -60,9 +60,4 @@ final class Player extends Model
     {
         return $this->hasMany(Ranking::class);
     }
-
-    public function news(): HasMany
-    {
-        return $this->hasMany(News::class);
-    }
 }

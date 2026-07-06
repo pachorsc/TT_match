@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Services;
 
 use App\Models\GameMatch;
-use App\Models\News;
 use App\Models\Player;
 use App\Services\MatchPreviewService;
 use App\Services\MatchService;
-use App\Services\NewsService;
 use App\Services\PlayerService;
 use App\Services\RankingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +26,6 @@ class MatchPreviewServiceTest extends TestCase
         $this->service = new MatchPreviewService(
             new PlayerService,
             new MatchService,
-            new NewsService,
             new RankingService,
         );
     }
@@ -36,7 +33,6 @@ class MatchPreviewServiceTest extends TestCase
     public function test_get_preview_data_returns_all_required_keys(): void
     {
         $match = GameMatch::factory()->completed()->create();
-        News::factory()->count(3)->create();
 
         $result = $this->service->getPreviewData($match);
 
@@ -45,7 +41,6 @@ class MatchPreviewServiceTest extends TestCase
         $this->assertArrayHasKey('playerB', $result);
         $this->assertArrayHasKey('headToHead', $result);
         $this->assertArrayHasKey('tournament', $result);
-        $this->assertArrayHasKey('news', $result);
     }
 
     public function test_get_preview_data_returns_player_stats(): void
@@ -95,15 +90,5 @@ class MatchPreviewServiceTest extends TestCase
         $result = $this->service->getPreviewData($match);
 
         $this->assertEquals($match->tournament_id, $result['tournament']->id);
-    }
-
-    public function test_get_preview_data_includes_latest_news(): void
-    {
-        News::factory()->count(5)->create();
-        $match = GameMatch::factory()->completed()->create();
-
-        $result = $this->service->getPreviewData($match);
-
-        $this->assertCount(5, $result['news']);
     }
 }

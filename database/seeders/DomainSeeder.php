@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Models\GameMatch;
 use App\Models\MatchSet;
-use App\Models\News;
 use App\Models\Player;
 use App\Models\Ranking;
 use App\Models\Tournament;
@@ -81,11 +80,5 @@ class DomainSeeder extends Seeder
             ]);
         }
 
-        foreach ($players->take(10) as $player) {
-            News::factory()
-                ->count(random_int(1, 3))
-                ->withPlayer($player)
-                ->create();
-        }
     }
 }
