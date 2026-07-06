@@ -53,7 +53,7 @@
                             <div class="flex items-center gap-3 mb-4">
                                 <span class="text-sm font-semibold text-white/60">{{ $pData['player']->full_name }}</span>
                                 <span class="text-xs text-white/20">—</span>
-                                <span class="text-xs text-white/30">WTT YouTube</span>
+                                <span class="text-xs text-white/30">YouTube</span>
                             </div>
                             <div class="videos-spinner flex items-center justify-center py-16">
                                 <svg class="w-8 h-8 text-sport-400 animate-spin" fill="none" viewBox="0 0 24 24">

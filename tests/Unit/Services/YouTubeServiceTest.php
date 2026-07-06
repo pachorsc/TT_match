@@ -123,7 +123,7 @@ class YouTubeServiceTest extends TestCase
         ]);
 
         $player = Player::factory()->create();
-        $cacheKey = "youtube.videos.{$player->id}";
+        $cacheKey = 'youtube.videos.v2.player.'.$player->id;
 
         $this->assertFalse(Cache::has($cacheKey));
 
@@ -131,10 +131,10 @@ class YouTubeServiceTest extends TestCase
 
         $this->assertTrue(Cache::has($cacheKey));
 
-        Http::assertSentCount(1);
+        Http::assertSentCount(2);
 
         $this->service->getPlayerVideos($player);
 
-        Http::assertSentCount(1);
+        Http::assertSentCount(2);
     }
 }

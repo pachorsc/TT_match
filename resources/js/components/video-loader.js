@@ -157,6 +157,8 @@ function createVideoCard(video, playerName) {
         ? timeAgo(video.published_at)
         : '';
 
+    const channelTitle = video.channel_title || 'YouTube';
+
     const wrapper = document.createElement('a');
     wrapper.href = video.url;
     wrapper.target = '_blank';
@@ -185,7 +187,7 @@ function createVideoCard(video, playerName) {
             ${video.description ? `<p class="text-xs text-white/40 leading-relaxed line-clamp-2">${escapeHtml(video.description)}</p>` : ''}
             <div class="flex items-center justify-between gap-3 pt-2">
                 <span class="text-xs text-white/30">${publishedAt}</span>
-                ${playerName ? `<span class="text-xs text-white/50 font-medium truncate">${escapeHtml(playerName)}</span>` : ''}
+                <span class="text-xs text-white/50 font-medium truncate">${escapeHtml(channelTitle)}</span>
             </div>
         </div>
     `;

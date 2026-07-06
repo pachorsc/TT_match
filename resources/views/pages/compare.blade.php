@@ -190,11 +190,11 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             @foreach([$playerAData, $playerBData] as $pData)
                                 <div class="videos-player-slot" data-player-id="{{ $pData['player']->id }}">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <span class="text-sm font-semibold text-white/60">{{ $pData['player']->full_name }}</span>
-                                        <span class="text-xs text-white/20">—</span>
-                                        <span class="text-xs text-white/30">WTT YouTube</span>
-                                    </div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-sm font-semibold text-white/60">{{ $pData['player']->full_name }}</span>
+                                <span class="text-xs text-white/20">—</span>
+                                <span class="text-xs text-white/30">YouTube</span>
+                            </div>
                                     <div class="videos-spinner flex items-center justify-center py-16">
                                         <svg class="w-8 h-8 text-sport-400 animate-spin" fill="none" viewBox="0 0 24 24">
                                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>

@@ -42,7 +42,8 @@ class IttfImportService
                 $playerId = $this->resolvePlayerId($ittfId);
 
                 if (! $playerId) {
-                    $playerId = $this->autoCreatePlayer($row);
+                    $gender = $this->genderFromRow($row);
+                    $playerId = $this->autoCreatePlayer($row, $gender);
                 }
 
                 if (! $playerId) {
@@ -129,15 +130,27 @@ class IttfImportService
                     continue;
                 }
 
+                // Skip mixed team events (XT) — app only handles same-gender events
+                $eventType = $row['event_type'] ?? '';
+                if ($eventType === 'XT') {
+                    $skipped++;
+
+                    continue;
+                }
+
+                $expectedGender = $this->expectedGenderFromEventType($eventType);
+
                 $playerAId = $this->resolveOrCreatePlayer(
                     $row['player_a_name'] ?? '',
                     $row['player_a_country'] ?? '',
-                    $row['player_ittf_id'] ?? null
+                    $row['player_ittf_id'] ?? null,
+                    $this->genderFromIttfId($row['player_ittf_id'] ?? null) ?? $expectedGender
                 );
                 $playerBId = $this->resolveOrCreatePlayer(
                     $row['player_b_name'] ?? '',
                     $row['player_b_country'] ?? '',
-                    null
+                    null,
+                    $expectedGender
                 );
 
                 if (! $playerAId || ! $playerBId) {
@@ -214,7 +227,7 @@ class IttfImportService
         return $this->importMatches($filename);
     }
 
-    private function resolveOrCreatePlayer(string $fullName, string $countryCode = '', ?string $ittfId = null): ?int
+    private function resolveOrCreatePlayer(string $fullName, string $countryCode = '', ?string $ittfId = null, ?string $gender = null): ?int
     {
         if (empty($fullName)) {
             return null;
@@ -231,21 +244,27 @@ class IttfImportService
         // Parse ITTF name format: "WANG Chuqin" -> surname="WANG", given="Chuqin"
         [$surname, $givenName] = $this->parseIttfName($fullName);
 
-        // Try exact match on surname + given name
-        $player = Player::where(function ($q) use ($surname, $givenName) {
+        // Try exact match on surname + given name, with optional gender filter
+        $player = Player::where(function ($q) use ($surname, $givenName, $gender) {
+            if ($gender) {
+                $q->where('gender', $gender);
+            }
+
             $q->where(function ($q2) use ($surname, $givenName) {
-                // Standard: last_name=HARIMOTO, first_name=Tomokazu
-                $q2->where('last_name', $surname)->where('first_name', $givenName);
-            })->orWhere(function ($q2) use ($surname, $givenName) {
-                // WTT format: first_name="Tomokazu HARIMOTO", last_name=""
-                $q2->where('first_name', 'like', "%{$surname}%")
-                    ->where('first_name', 'like', "%{$givenName}%");
-            })->orWhere(function ($q2) use ($surname) {
-                // Reversed: first_name="Tomokazu", last_name="" (surname in first_name)
-                $q2->where('first_name', $surname)->whereNull('last_name');
-            })->orWhere(function ($q2) use ($surname) {
-                // Surname match only
-                $q2->where('last_name', $surname);
+                $q2->where(function ($q3) use ($surname, $givenName) {
+                    // Standard: last_name=HARIMOTO, first_name=Tomokazu
+                    $q3->where('last_name', $surname)->where('first_name', $givenName);
+                })->orWhere(function ($q3) use ($surname, $givenName) {
+                    // WTT format: first_name="Tomokazu HARIMOTO", last_name=""
+                    $q3->where('first_name', 'like', "%{$surname}%")
+                        ->where('first_name', 'like', "%{$givenName}%");
+                })->orWhere(function ($q3) use ($surname) {
+                    // Reversed: first_name="Tomokazu", last_name="" (surname in first_name)
+                    $q3->where('first_name', $surname)->whereNull('last_name');
+                })->orWhere(function ($q3) use ($surname) {
+                    // Surname match only
+                    $q3->where('last_name', $surname);
+                });
             });
         })->first();
         if ($player) {
@@ -256,31 +275,39 @@ class IttfImportService
             return $player->id;
         }
 
-        // Broader search — match surname anywhere in first_name or last_name
-        $player = Player::where(function ($q) use ($surname) {
-            $q->where('last_name', $surname)
-                ->orWhere('first_name', 'like', "%{$surname}%");
-        })->first();
-        if ($player) {
-            return $player->id;
-        }
-
         // Auto-create player if not found
         if ($givenName) {
             $cc = strlen($countryCode) > 2 ? substr($countryCode, 0, 2) : $countryCode;
-            $player = Player::create([
+            $playerData = [
                 'ittf_id' => $ittfId,
                 'first_name' => $givenName,
                 'last_name' => $surname,
                 'country_code' => $cc,
                 'country' => $countryCode,
                 'date_of_birth' => null,
-            ]);
+            ];
+
+            if ($gender) {
+                $playerData['gender'] = $gender;
+            }
+
+            $player = Player::create($playerData);
 
             return $player->id;
         }
 
         return null;
+    }
+
+    private function genderFromIttfId(?string $ittfId): ?string
+    {
+        if (! $ittfId) {
+            return null;
+        }
+
+        $player = Player::where('ittf_id', $ittfId)->first();
+
+        return $player?->gender;
     }
 
     private function resolveWinner(string $winnerName, string $playerAName, string $playerBName, int $playerAId, int $playerBId): ?int
@@ -385,16 +412,19 @@ class IttfImportService
             'country_code' => $countryCode,
         ];
 
-        // Parse birth_year from details field if available
-        $birthYear = $row['birth_year'] ?? null;
-        if (! $birthYear) {
-            $details = $row['details'] ?? '';
-            if ($details && preg_match('/Birth Year:\s*(\d{4})/', $details, $matches)) {
-                $birthYear = (int) $matches[1];
+        // Parse gender and birth_year from details field if available
+        $details = $row['details'] ?? '';
+        if ($details) {
+            if (preg_match('/Gender:\s*(Male|Female)/i', $details, $matches)) {
+                $data['gender'] = strtolower($matches[1]) === 'female' ? 'F' : 'M';
             }
-        }
-        if ($birthYear && $birthYear > 1900 && $birthYear < date('Y')) {
-            $data['date_of_birth'] = "{$birthYear}-01-01";
+
+            if (preg_match('/Birth Year:\s*(\d{4})/', $details, $matches)) {
+                $birthYear = (int) $matches[1];
+                if ($birthYear > 1900 && $birthYear < date('Y')) {
+                    $data['date_of_birth'] = "{$birthYear}-01-01";
+                }
+            }
         }
 
         return $data;
@@ -437,7 +467,7 @@ class IttfImportService
         return $player?->id;
     }
 
-    private function autoCreatePlayer(array $row): ?int
+    private function autoCreatePlayer(array $row, ?string $gender = null): ?int
     {
         $ittfId = (string) ($row['ittf_id'] ?? '');
 
@@ -453,7 +483,7 @@ class IttfImportService
             $countryCode = substr($countryCode, 0, 2);
         }
 
-        $player = Player::create([
+        $playerData = [
             'ittf_id' => $ittfId,
             'first_name' => $firstName,
             'last_name' => $lastName,
@@ -461,9 +491,32 @@ class IttfImportService
             'country_code' => $countryCode,
             'world_ranking' => $row['rank_position'] ?? null,
             'rating_points' => $row['rating_points'] ?? null,
-        ]);
+        ];
+
+        if ($gender) {
+            $playerData['gender'] = $gender;
+        }
+
+        $player = Player::create($playerData);
 
         return $player->id;
+    }
+
+    private function genderFromRow(array $row): string
+    {
+        return ($row['gender'] ?? 'men') === 'women' ? 'F' : 'M';
+    }
+
+    private function expectedGenderFromEventType(string $eventType): ?string
+    {
+        // Extract base gender from event type (MS/WS/MT/WT/MD/WD + youth prefixes)
+        $baseType = preg_replace('/^U\d{2}/', '', $eventType);
+
+        return match ($baseType) {
+            'MS', 'MT', 'MD' => 'M',
+            'WS', 'WT', 'WD' => 'F',
+            default => null,
+        };
     }
 
     private function loadImportFile(string $filename): array
