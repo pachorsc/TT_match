@@ -235,11 +235,6 @@ class IttfImportService
         ];
     }
 
-    public function importTop100Matches(string $filename): array
-    {
-        return $this->importMatches($filename);
-    }
-
     private function resolveOrCreatePlayer(string $fullName, string $countryCode = '', ?string $ittfId = null, ?string $gender = null): ?int
     {
         if (empty($fullName)) {

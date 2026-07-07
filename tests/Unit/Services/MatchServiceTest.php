@@ -127,19 +127,4 @@ class MatchServiceTest extends TestCase
         $this->assertEquals(0, $result['total_matches']);
         $this->assertCount(0, $result['matches']);
     }
-
-    public function test_get_recent_matches_between_returns_limited_results(): void
-    {
-        $playerA = Player::factory()->create();
-        $playerB = Player::factory()->create();
-
-        GameMatch::factory()->completed()
-            ->count(5)
-            ->betweenPlayers($playerA, $playerB)
-            ->create();
-
-        $result = $this->service->getRecentMatchesBetween($playerA, $playerB, 3);
-
-        $this->assertCount(3, $result);
-    }
 }

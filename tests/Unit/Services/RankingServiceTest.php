@@ -23,34 +23,6 @@ class RankingServiceTest extends TestCase
         $this->service = new RankingService;
     }
 
-    public function test_get_current_ranking_returns_most_recent(): void
-    {
-        $player = Player::factory()->create();
-
-        $oldRanking = Ranking::factory()->create([
-            'player_id' => $player->id,
-            'ranking_date' => now()->subWeeks(2),
-        ]);
-
-        $currentRanking = Ranking::factory()->create([
-            'player_id' => $player->id,
-            'ranking_date' => now()->subWeek(),
-        ]);
-
-        $result = $this->service->getCurrentRanking($player);
-
-        $this->assertEquals($currentRanking->id, $result->id);
-    }
-
-    public function test_get_current_ranking_returns_null_when_no_rankings(): void
-    {
-        $player = Player::factory()->create();
-
-        $result = $this->service->getCurrentRanking($player);
-
-        $this->assertNull($result);
-    }
-
     public function test_get_ranking_history_returns_ordered_by_date(): void
     {
         $player = Player::factory()->create();

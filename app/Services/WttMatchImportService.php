@@ -156,7 +156,7 @@ class WttMatchImportService
         }
     }
 
-    public function resolvePlayerByWttId(string $ittfId): ?Player
+    private function resolvePlayerByWttId(string $ittfId): ?Player
     {
         if (! $ittfId) {
             return null;
@@ -167,8 +167,6 @@ class WttMatchImportService
 
     private function resolveOrCreateTournament(array $data): Tournament
     {
-        $eventId = $data['event_id'] ?? 3242;
-
         $existing = Tournament::where('name', 'United States Smash 2026')->first();
 
         if ($existing) {

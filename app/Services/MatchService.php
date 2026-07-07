@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\GameMatch;
-use App\Models\Player;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 final class MatchService
 {
@@ -46,15 +44,5 @@ final class MatchService
             'player_b_wins' => $playerBWins,
             'matches' => $matches,
         ];
-    }
-
-    public function getRecentMatchesBetween(Player $playerA, Player $playerB, int $limit = 10): Collection
-    {
-        return GameMatch::completed()
-            ->with(['tournament', 'playerA', 'playerB', 'winner', 'sets'])
-            ->betweenPlayers($playerA->id, $playerB->id)
-            ->orderByDesc('match_date')
-            ->limit($limit)
-            ->get();
     }
 }

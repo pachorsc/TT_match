@@ -28,17 +28,4 @@ final class MatchSet extends Model
     {
         return $this->belongsTo(GameMatch::class, 'match_id');
     }
-
-    public function getWinnerAttribute(): ?int
-    {
-        if ($this->player_a_points > $this->player_b_points) {
-            return 1;
-        }
-
-        if ($this->player_b_points > $this->player_a_points) {
-            return 2;
-        }
-
-        return null;
-    }
 }

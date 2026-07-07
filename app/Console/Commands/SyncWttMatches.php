@@ -11,7 +11,8 @@ final class SyncWttMatches extends Command
 {
     protected $signature = 'wtt:sync-matches
         {eventId=3242 : WTT Event ID}
-        {--tournament-id= : Optional tournament ID (auto-resolves from API if omitted)}';
+        {--tournament-id= : Optional tournament ID (auto-resolves from API if omitted)}
+        {--name= : Tournament name (overrides API response)}';
 
     protected $description = 'Sync WTT matches directly from the API — only processes new or changed matches';
 
@@ -21,11 +22,12 @@ final class SyncWttMatches extends Command
         $tournamentId = $this->option('tournament-id')
             ? (int) $this->option('tournament-id')
             : null;
+        $tournamentName = $this->option('name') ?: null;
 
         $this->info("Syncing matches for WTT event {$eventId}...");
         $this->newLine();
 
-        $result = $syncService->sync($eventId, $tournamentId);
+        $result = $syncService->sync($eventId, $tournamentId, $tournamentName);
 
         $this->line(" Tournament: {$result['tournament']}");
         $this->line(" Total in API: {$result['total_in_api']}");

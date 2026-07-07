@@ -27,7 +27,7 @@ class WttApiClient
         ];
     }
 
-    public function fetchBracket(int $eventId, string $subEventCode): array
+    private function fetchBracket(int $eventId, string $subEventCode): array
     {
         $url = self::BASE_URL.'/'.$eventId.'/'.$subEventCode;
 

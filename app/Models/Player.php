@@ -33,27 +33,11 @@ final class Player extends Model
         'height_cm' => 'integer',
         'world_ranking' => 'integer',
         'rating_points' => 'integer',
-        'gender' => 'string',
     ];
 
     public function getFullNameAttribute(): string
     {
         return "{$this->first_name} {$this->last_name}";
-    }
-
-    public function matchesAsPlayerA(): HasMany
-    {
-        return $this->hasMany(GameMatch::class, 'player_a_id');
-    }
-
-    public function matchesAsPlayerB(): HasMany
-    {
-        return $this->hasMany(GameMatch::class, 'player_b_id');
-    }
-
-    public function wonMatches(): HasMany
-    {
-        return $this->hasMany(GameMatch::class, 'winner_id');
     }
 
     public function rankings(): HasMany

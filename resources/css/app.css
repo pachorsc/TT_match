@@ -43,15 +43,6 @@
         @apply border-white/[0.15] bg-white/[0.05];
     }
 
-    .card-glass-accent {
-        @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-[2px] transition-all duration-300;
-    }
-
-    .card-glass-accent:hover {
-        @apply border-sport-500/30 bg-white/[0.06];
-        box-shadow: 0 4px 24px rgba(59, 130, 246, 0.08);
-    }
-
     .badge-glass {
         @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-white/10 text-white/70 border-white/10;
     }
@@ -62,35 +53,6 @@
 
     .badge-blue-glass {
         @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-sport-500/20 text-sport-400 border-sport-500/30;
-    }
-
-    .badge-green-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-emerald-500/20 text-emerald-400 border-emerald-500/30;
-    }
-
-    .badge-red-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-red-500/20 text-red-400 border-red-500/30;
-    }
-
-    .text-accent {
-        @apply text-sport-400;
-    }
-
-    .text-accent-hover {
-        @apply hover:text-sport-400 transition-colors duration-200;
-    }
-
-    .link-accent {
-        @apply text-white/70 hover:text-sport-400 transition-colors duration-200;
-    }
-
-    .glow-border {
-        @apply transition-all duration-300;
-    }
-
-    .glow-border:hover {
-        border-color: rgba(59, 130, 246, 0.3);
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.06);
     }
 
     .section-heading {

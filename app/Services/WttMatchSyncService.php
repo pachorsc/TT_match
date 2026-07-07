@@ -15,19 +15,20 @@ final class WttMatchSyncService
         private readonly WttApiClient $apiClient,
     ) {}
 
-    public function sync(int $eventId, ?int $tournamentId = null): array
+    public function sync(int $eventId, ?int $tournamentId = null, ?string $tournamentName = null): array
     {
         $apiData = $this->apiClient->fetchAllMatches($eventId);
         $apiMatches = $apiData['matches'];
         $competition = $apiData['competition'];
 
-        $tournamentName = $competition['Name']
+        $tournamentName = $tournamentName
+            ?? $competition['Name']
             ?? $competition['Title']
-            ?? "WTT Event {$eventId}";
+            ?? null;
 
         $tournament = $tournamentId
             ? Tournament::findOrFail($tournamentId)
-            : $this->resolveOrCreateTournament($tournamentName);
+            : $this->resolveOrCreateTournament($tournamentName, $eventId, $apiMatches);
 
         $existingByCode = GameMatch::where('tournament_id', $tournament->id)
             ->whereNotNull('ittf_id')
@@ -187,7 +188,7 @@ final class WttMatchSyncService
         }
     }
 
-    public function resolvePlayerByWttId(string $ittfId): ?Player
+    private function resolvePlayerByWttId(string $ittfId): ?Player
     {
         if ($ittfId === '') {
             return null;
@@ -222,13 +223,24 @@ final class WttMatchSyncService
         return null;
     }
 
-    private function resolveOrCreateTournament(string $name): Tournament
+    private function resolveOrCreateTournament(?string $name, int $eventId, array $apiMatches): Tournament
     {
-        $tournament = Tournament::where('name', $name)->first();
+        // Check if any of these matches already exist in the DB
+        $docCodes = array_column($apiMatches, 'document_code');
+        $existingMatch = GameMatch::whereIn('ittf_id', $docCodes)->first();
 
-        if ($tournament !== null) {
+        if ($existingMatch !== null) {
+            $tournament = $existingMatch->tournament;
+
+            // Update name if provided and different
+            if ($name && $tournament->name !== $name) {
+                $tournament->update(['name' => $name]);
+            }
+
             return $tournament;
         }
+
+        $name = $name ?? "WTT Event {$eventId}";
 
         return Tournament::create([
             'name' => $name,
