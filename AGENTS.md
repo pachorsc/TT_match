@@ -14,6 +14,7 @@ This file contains mandatory instructions for any AI agent working on this codeb
    - `UI_GUIDELINES.md`
    - `DOMAIN.md`
    - `ROADMAP.md`
+   - `IMPROVEMENTS.md` (contains pending features to implement)
 
 2. Understand the domain model and relationships before modifying any model or migration.
 
