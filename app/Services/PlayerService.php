@@ -59,6 +59,7 @@ final class PlayerService
                 ->orWhere('player_b_id', $player->id)
             )
             ->orderByDesc('match_date')
+            ->orderByDesc('id')
             ->limit(7)
             ->get();
     }

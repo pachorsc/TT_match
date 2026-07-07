@@ -99,7 +99,10 @@ class PlayerServiceTest extends TestCase
 
         $this->assertCount(7, $result);
         $this->assertEquals(
-            $matches->sortByDesc('match_date')->take(7)->pluck('id')->values(),
+            $matches->sortBy([
+                ['match_date', 'desc'],
+                ['id', 'desc'],
+            ])->take(7)->pluck('id')->values(),
             $result->pluck('id')->values()
         );
     }

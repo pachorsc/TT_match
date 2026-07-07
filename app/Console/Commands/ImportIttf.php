@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\IttfImportService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 
 class ImportIttf extends Command
@@ -139,6 +140,12 @@ class ImportIttf extends Command
         }
 
         $this->info("Done. Total imported: {$totalImported}, Total errors: {$totalErrors}");
+
+        // Auto-validate: remove impossible matches (same players, same tournament, multiple matches)
+        $this->newLine();
+        $this->info('Running post-import validation...');
+        $validateResult = Artisan::call('matches:validate', ['--dry-run' => false]);
+        $this->info(Artisan::output());
 
         return $exitCode;
     }

@@ -167,8 +167,13 @@ class IttfImportService
                     $playerBId
                 );
 
-                $tournamentId = $this->resolveTournament(
+                $tournamentName = $this->normalizeTournamentName(
                     $row['tournament'] ?? '',
+                    $row['year'] ?? date('Y')
+                );
+
+                $tournamentId = $this->resolveTournament(
+                    $tournamentName,
                     $row['year'] ?? date('Y')
                 );
 
@@ -190,6 +195,14 @@ class IttfImportService
                 );
 
                 $existing = GameMatch::where('ittf_id', $dedupKey)->first();
+
+                // Also check for cross-source duplicates (e.g. already imported via WTT)
+                if (! $existing) {
+                    $existing = $this->findMatchByPlayersRoundTournament(
+                        $playerAId, $playerBId, $tournamentId, $row['round'] ?? ''
+                    );
+                }
+
                 if ($existing) {
                     $skipped++;
 
@@ -500,6 +513,62 @@ class IttfImportService
         $player = Player::create($playerData);
 
         return $player->id;
+    }
+
+    /**
+     * Normalize tournament name by stripping sponsor suffixes and standardizing format.
+     */
+    private function normalizeTournamentName(string $name, string $year): string
+    {
+        $normalized = $name;
+
+        // Remove "Presented by ..." and similar sponsor suffixes
+        $normalized = preg_replace(
+            '/\s+(Presented by|Sponsored by|Powered by|By)\s+.+$/i',
+            '',
+            $normalized
+        );
+
+        // Remove trailing whitespace/punctuation
+        $normalized = trim($normalized);
+        $normalized = rtrim($normalized, '. ');
+
+        // Normalize "Men's & Women's World Cup" -> "World Cup" for brevity
+        $normalized = preg_replace(
+            "/ITTF\s+(Men's\s*[&and]\s*Women's\s+)?World\s+Cup/i",
+            'ITTF World Cup',
+            $normalized
+        );
+
+        // Ensure year is present at the end
+        if (! str_contains($normalized, $year)) {
+            $normalized = trim($normalized)." {$year}";
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * Find an existing match by players, tournament, and round.
+     * Used as a fallback dedup check across different import sources (ITTF vs WTT).
+     */
+    private function findMatchByPlayersRoundTournament(
+        int $playerAId,
+        int $playerBId,
+        int $tournamentId,
+        string $round
+    ): ?GameMatch {
+        return GameMatch::where('tournament_id', $tournamentId)
+            ->where('round', $round)
+            ->where(function ($q) use ($playerAId, $playerBId) {
+                $q->where(function ($q2) use ($playerAId, $playerBId) {
+                    $q2->where('player_a_id', $playerAId)
+                        ->where('player_b_id', $playerBId);
+                })->orWhere(function ($q2) use ($playerAId, $playerBId) {
+                    $q2->where('player_a_id', $playerBId)
+                        ->where('player_b_id', $playerAId);
+                });
+            })->first();
     }
 
     private function genderFromRow(array $row): string
