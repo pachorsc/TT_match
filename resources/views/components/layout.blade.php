@@ -38,15 +38,20 @@
                    {{ $currentRoute === 'home' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
                     Inicio
                 </a>
-                <a href="{{ route('compare') }}"
+                <a href="{{ route('players.index') }}"
                    class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
-                   {{ $currentRoute === 'compare' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
-                    Head to Head
+                   {{ str_starts_with($currentRoute, 'players') ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
+                    Jugadores
                 </a>
                 <a href="{{ route('videos') }}"
                    class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
                    {{ $currentRoute === 'videos' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
                     Videos
+                </a>
+                <a href="{{ route('compare') }}"
+                   class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-200
+                   {{ $currentRoute === 'compare' ? 'bg-white/10 text-white' : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]' }}">
+                    Head to Head
                 </a>
                 <div class="ml-2 pl-2 border-l border-white/[0.06]">
                     <x-theme-toggle />

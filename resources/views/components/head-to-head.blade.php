@@ -17,7 +17,7 @@
                     <p class="text-3xl sm:text-4xl font-black {{ $headToHead['player_a_wins'] > $headToHead['player_b_wins'] ? 'text-emerald-400' : 'text-white/80' }}">
                         {{ $headToHead['player_a_wins'] }}
                     </p>
-                    <p class="text-xs text-white/40 uppercase tracking-wider mt-1">{{ $playerA->full_name }}</p>
+                    <a href="{{ route('players.show', $playerA) }}" class="text-xs text-white/40 hover:text-sport-400 uppercase tracking-wider mt-1 transition-colors">{{ $playerA->full_name }}</a>
                 </div>
 
                 <div class="text-center shrink-0">
@@ -29,7 +29,7 @@
                     <p class="text-3xl sm:text-4xl font-black {{ $headToHead['player_b_wins'] > $headToHead['player_a_wins'] ? 'text-emerald-400' : 'text-white/80' }}">
                         {{ $headToHead['player_b_wins'] }}
                     </p>
-                    <p class="text-xs text-white/40 uppercase tracking-wider mt-1">{{ $playerB->full_name }}</p>
+                    <a href="{{ route('players.show', $playerB) }}" class="text-xs text-white/40 hover:text-sport-400 uppercase tracking-wider mt-1 transition-colors">{{ $playerB->full_name }}</a>
                 </div>
             </div>
 

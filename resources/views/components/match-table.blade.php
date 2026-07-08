@@ -34,8 +34,8 @@
                             <td class="px-5 sm:px-6 py-3 text-white/40">
                                 {{ $match->tournament->name }}
                             </td>
-                            <td class="px-5 sm:px-6 py-3 font-medium text-white/80">
-                                {{ $opponent->full_name }}
+                            <td class="px-5 sm:px-6 py-3 font-medium">
+                                <a href="{{ route('players.show', $opponent) }}" class="text-white/80 hover:text-sport-400 transition-colors">{{ $opponent->full_name }}</a>
                             </td>
                             <td class="px-5 sm:px-6 py-3 text-center font-mono font-bold text-white/80">
                                 {{ $playerSets }} – {{ $opponentSets }}

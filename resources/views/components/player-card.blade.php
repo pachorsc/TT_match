@@ -2,7 +2,7 @@
 
 <div class="card-glass p-5 sm:p-6 space-y-5">
     <div class="flex items-center justify-between">
-        <h3 class="text-base sm:text-lg font-bold tracking-tight text-white/90">{{ $player->full_name }}</h3>
+        <a href="{{ route('players.show', $player) }}" class="text-base sm:text-lg font-bold tracking-tight text-white/90 hover:text-sport-400 transition-colors">{{ $player->full_name }}</a>
         <span class="badge-glass">
             {{ $player->country_code }}
         </span>
