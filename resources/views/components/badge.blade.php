@@ -14,7 +14,7 @@
         L
     </span>
 @else
-    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/10 text-white/30 border border-white/10">
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-black/5 dark:bg-white/10 text-gray-400 dark:text-white/30 border border-black/10 dark:border-white/10">
         —
     </span>
 @endif

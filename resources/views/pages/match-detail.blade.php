@@ -5,8 +5,8 @@
         {{-- Player Matchup Header --}}
         <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 py-4 sm:py-6">
             <x-player-header :player="$playerA" />
-            <div class="relative flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white/10 bg-white/[0.03]">
-                <span class="text-sm sm:text-base font-black tracking-wider text-white/40">VS</span>
+            <div class="relative flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.03]">
+                <span class="text-sm sm:text-base font-black tracking-wider text-gray-400 dark:text-white/40">VS</span>
             </div>
             <x-player-header :player="$playerB" />
         </div>
@@ -21,20 +21,20 @@
 
                     {{-- Player A --}}
                     <div class="text-right min-w-0 flex-1 {{ $winner && $winner->id === $playerA->id ? '' : 'opacity-40' }}">
-                        <p class="text-base sm:text-lg font-bold truncate text-white/90">
+                        <p class="text-base sm:text-lg font-bold truncate text-gray-900 dark:text-white/90">
                             {{ $playerA->first_name }} {{ $playerA->last_name }}
                         </p>
-                        <p class="text-xs text-white/30 mt-0.5">{{ $playerA->country_code }} @if($playerA->world_ranking)· #{{ $playerA->world_ranking }}@endif</p>
+                        <p class="text-xs text-gray-400 dark:text-white/30 mt-0.5">{{ $playerA->country_code }} @if($playerA->world_ranking)· #{{ $playerA->world_ranking }}@endif</p>
                     </div>
 
                     {{-- Score --}}
                     <div class="flex flex-col items-center shrink-0">
                         <div class="flex items-baseline gap-3">
-                            <span class="text-3xl sm:text-4xl font-black {{ $winner && $winner->id === $playerA->id ? 'text-emerald-400' : 'text-white/50' }}">
+                            <span class="text-3xl sm:text-4xl font-black {{ $winner && $winner->id === $playerA->id ? 'text-emerald-400' : 'text-gray-400 dark:text-white/50' }}">
                                 {{ $match->player_a_sets }}
                             </span>
-                            <span class="text-lg font-bold text-white/20">—</span>
-                            <span class="text-3xl sm:text-4xl font-black {{ $winner && $winner->id === $playerB->id ? 'text-emerald-400' : 'text-white/50' }}">
+                            <span class="text-lg font-bold text-gray-300 dark:text-white/20">—</span>
+                            <span class="text-3xl sm:text-4xl font-black {{ $winner && $winner->id === $playerB->id ? 'text-emerald-400' : 'text-gray-400 dark:text-white/50' }}">
                                 {{ $match->player_b_sets }}
                             </span>
                         </div>
@@ -50,10 +50,10 @@
 
                     {{-- Player B --}}
                     <div class="text-left min-w-0 flex-1 {{ $winner && $winner->id === $playerB->id ? '' : 'opacity-40' }}">
-                        <p class="text-base sm:text-lg font-bold truncate text-white/90">
+                        <p class="text-base sm:text-lg font-bold truncate text-gray-900 dark:text-white/90">
                             {{ $playerB->first_name }} {{ $playerB->last_name }}
                         </p>
-                        <p class="text-xs text-white/30 mt-0.5">{{ $playerB->country_code }} @if($playerB->world_ranking)· #{{ $playerB->world_ranking }}@endif</p>
+                        <p class="text-xs text-gray-400 dark:text-white/30 mt-0.5">{{ $playerB->country_code }} @if($playerB->world_ranking)· #{{ $playerB->world_ranking }}@endif</p>
                     </div>
 
                 </div>

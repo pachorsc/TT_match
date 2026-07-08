@@ -21,7 +21,7 @@
                                 stroke-dashoffset="{{ $offset }}"/>
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <span class="text-sm font-black text-white/90">{{ $winRate }}%</span>
+                        <span class="text-sm font-black text-gray-900 dark:text-white/90">{{ $winRate }}%</span>
                     </div>
                 </div>
             @endif
@@ -29,7 +29,7 @@
             {{-- Player Info --}}
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center gap-2 flex-wrap">
-                    <a href="{{ route('players.show', $player) }}" class="text-sm sm:text-base font-bold tracking-tight text-white/90 hover:text-sport-400 transition-colors truncate">{{ $player->full_name }}</a>
+                    <a href="{{ route('players.show', $player) }}" class="text-sm sm:text-base font-bold tracking-tight text-gray-900 dark:text-white/90 hover:text-sport-400 transition-colors truncate">{{ $player->full_name }}</a>
                     <span class="badge-glass text-[10px] px-2 py-0.5 shrink-0">{{ $player->country_code }}</span>
                     @if($player->world_ranking)
                         <span class="badge-amber-glass text-[10px] px-2 py-0.5 shrink-0">#{{ $player->world_ranking }}</span>
@@ -38,11 +38,11 @@
 
                 @if($stats)
                     <div class="flex items-center gap-4 text-[11px]">
-                        <span class="text-white/30">{{ $stats['total_matches'] }} partidos</span>
+                        <span class="text-gray-400 dark:text-white/30">{{ $stats['total_matches'] }} partidos</span>
                         <span class="text-emerald-400/80 font-semibold">{{ $stats['wins'] }}W</span>
                         <span class="text-red-400/80 font-semibold">{{ $stats['losses'] }}L</span>
                         @if($player->rating_points)
-                            <span class="text-white/25 hidden sm:inline">{{ number_format($player->rating_points) }} pts</span>
+                            <span class="text-gray-400 dark:text-white/25 hidden sm:inline">{{ number_format($player->rating_points) }} pts</span>
                         @endif
                     </div>
                 @endif
@@ -58,7 +58,7 @@
 @else
     <div class="card-glass p-5 sm:p-6 space-y-5">
         <div class="flex items-center justify-between">
-            <a href="{{ route('players.show', $player) }}" class="text-base sm:text-lg font-bold tracking-tight text-white/90 hover:text-sport-400 transition-colors">{{ $player->full_name }}</a>
+            <a href="{{ route('players.show', $player) }}" class="text-base sm:text-lg font-bold tracking-tight text-gray-900 dark:text-white/90 hover:text-sport-400 transition-colors">{{ $player->full_name }}</a>
             <span class="badge-glass">
                 {{ $player->country_code }}
             </span>
@@ -77,27 +77,27 @@
 
             <div class="space-y-1">
                 <span class="stat-label">Hand</span>
-                <p class="font-semibold text-white/70">{{ $player->dominant_hand }}</p>
+                <p class="font-semibold text-gray-600 dark:text-white/70">{{ $player->dominant_hand }}</p>
             </div>
 
             <div class="space-y-1">
                 <span class="stat-label">Style</span>
-                <p class="font-semibold text-white/70">{{ $player->playing_style ?? '—' }}</p>
+                <p class="font-semibold text-gray-600 dark:text-white/70">{{ $player->playing_style ?? '—' }}</p>
             </div>
 
             <div class="space-y-1">
                 <span class="stat-label">Age</span>
-                <p class="font-semibold text-white/70">{{ $player->date_of_birth ? $player->date_of_birth->age . ' yrs' : '—' }}</p>
+                <p class="font-semibold text-gray-600 dark:text-white/70">{{ $player->date_of_birth ? $player->date_of_birth->age . ' yrs' : '—' }}</p>
             </div>
 
             <div class="space-y-1">
                 <span class="stat-label">Height</span>
-                <p class="font-semibold text-white/70">{{ $player->height_cm ? $player->height_cm . ' cm' : '—' }}</p>
+                <p class="font-semibold text-gray-600 dark:text-white/70">{{ $player->height_cm ? $player->height_cm . ' cm' : '—' }}</p>
             </div>
         </div>
 
         @if($stats)
-            <div class="pt-4 border-t border-white/[0.06]">
+            <div class="pt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                     <div>
                         <p class="stat-value text-lg">{{ $stats['total_matches'] }}</p>

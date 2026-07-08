@@ -36,40 +36,40 @@
 
 @layer utilities {
     .card-glass {
-        @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-[2px] transition-all duration-300;
+        @apply rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.03] backdrop-blur-[2px] transition-all duration-300 shadow-sm dark:shadow-none;
     }
 
     .card-glass:hover {
-        @apply border-white/[0.15] bg-white/[0.05];
+        @apply border-black/[0.15] dark:border-white/[0.15] bg-gray-50 dark:bg-white/[0.05];
     }
 
     .badge-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-white/10 text-white/70 border-white/10;
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-black/5 dark:bg-white/10 text-gray-600 dark:text-white/70 border-black/10 dark:border-white/10;
     }
 
     .badge-amber-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-amber-500/20 text-amber-400 border-amber-500/30;
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-amber-500/15 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/25 dark:border-amber-500/30;
     }
 
     .badge-blue-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-sport-500/20 text-sport-400 border-sport-500/30;
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-sport-500/15 dark:bg-sport-500/20 text-sport-500 dark:text-sport-400 border-sport-500/25 dark:border-sport-500/30;
     }
 
     .section-heading {
-        @apply text-xs font-bold uppercase tracking-[0.12em] text-white/40;
+        @apply text-xs font-bold uppercase tracking-[0.12em] text-gray-400 dark:text-white/40;
     }
 
     .stat-value {
-        @apply font-bold text-white;
+        @apply font-bold text-gray-900 dark:text-white;
     }
 
     .stat-label {
-        @apply text-[11px] font-semibold uppercase tracking-wider text-white/40;
+        @apply text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-white/40;
     }
 
     /* ── Stat Bar Enhanced ── */
     .stat-bar-track {
-        @apply relative h-3 rounded-full overflow-hidden bg-white/[0.06];
+        @apply relative h-3 rounded-full overflow-hidden bg-black/[0.06] dark:bg-white/[0.06];
     }
 
     .stat-bar-fill-a {
@@ -92,7 +92,7 @@
 
     /* ── Win Rate Inline Bar ── */
     .wr-bar-track {
-        @apply relative h-1.5 rounded-full overflow-hidden bg-white/[0.06];
+        @apply relative h-1.5 rounded-full overflow-hidden bg-black/[0.06] dark:bg-white/[0.06];
     }
 
     .wr-bar-fill {
@@ -122,6 +122,10 @@
 
     .wr-ring-track {
         fill: none;
+        stroke: rgba(0, 0, 0, 0.06);
+    }
+
+    :dark .wr-ring-track {
         stroke: rgba(255, 255, 255, 0.06);
     }
 
@@ -146,11 +150,11 @@
 
     /* ── Insight Card ── */
     .insight-card {
-        @apply flex items-start gap-3 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06];
+        @apply flex items-start gap-3 px-4 py-3 rounded-xl bg-white dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06];
     }
 
     .insight-card:hover {
-        @apply bg-white/[0.05] border-white/[0.1];
+        @apply bg-gray-50 dark:bg-white/[0.05] border-black/[0.1] dark:border-white/[0.1];
     }
 
     /* ── Form Block ── */
@@ -214,5 +218,13 @@
         .animate-fade-in {
             animation: none;
         }
+    }
+
+    .logo-glow {
+        transition: filter 0.3s ease;
+    }
+
+    .logo-glow:hover {
+        filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));
     }
 }

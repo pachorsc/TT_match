@@ -4,7 +4,7 @@
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
         <div class="space-y-2">
             <div class="flex flex-wrap items-center gap-3">
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">{{ $player->full_name }}</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">{{ $player->full_name }}</h1>
                 <span class="badge-glass">{{ $player->country_code }}</span>
             </div>
 
@@ -29,19 +29,19 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3 text-sm">
             <div>
                 <span class="stat-label">Hand</span>
-                <p class="font-semibold text-white/80 mt-0.5">{{ $player->dominant_hand }}</p>
+                <p class="font-semibold text-gray-700 dark:text-white/80 mt-0.5">{{ $player->dominant_hand }}</p>
             </div>
             <div>
                 <span class="stat-label">Age</span>
-                <p class="font-semibold text-white/80 mt-0.5">{{ $player->date_of_birth ? $player->date_of_birth->age . ' yrs' : '—' }}</p>
+                <p class="font-semibold text-gray-700 dark:text-white/80 mt-0.5">{{ $player->date_of_birth ? $player->date_of_birth->age . ' yrs' : '—' }}</p>
             </div>
             <div>
                 <span class="stat-label">Height</span>
-                <p class="font-semibold text-white/80 mt-0.5">{{ $player->height_cm ? $player->height_cm . ' cm' : '—' }}</p>
+                <p class="font-semibold text-gray-700 dark:text-white/80 mt-0.5">{{ $player->height_cm ? $player->height_cm . ' cm' : '—' }}</p>
             </div>
             <div>
                 <span class="stat-label">Style</span>
-                <p class="font-semibold text-white/80 mt-0.5">{{ $player->playing_style ?? '—' }}</p>
+                <p class="font-semibold text-gray-700 dark:text-white/80 mt-0.5">{{ $player->playing_style ?? '—' }}</p>
             </div>
         </div>
     </div>

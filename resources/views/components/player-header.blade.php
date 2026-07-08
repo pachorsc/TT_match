@@ -1,7 +1,7 @@
 @props(['player', 'ranking' => null, 'rankingMovement' => null])
 
 <div class="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4">
-    <a href="{{ route('players.show', $player) }}" class="text-2xl sm:text-3xl font-bold tracking-tight text-white/90 hover:text-sport-400 transition-colors">{{ $player->full_name }}</a>
+    <a href="{{ route('players.show', $player) }}" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white/90 hover:text-sport-400 transition-colors">{{ $player->full_name }}</a>
 
     <div class="flex flex-wrap justify-center sm:justify-start items-center gap-2">
         <span class="badge-glass">

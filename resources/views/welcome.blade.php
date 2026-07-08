@@ -1,15 +1,15 @@
 <x-layout title="TT Match — Table Tennis Match Preview">
 
-    <div class="space-y-10 sm:space-y-12">
+    <div class="flex flex-col items-center justify-center min-h-[calc(100vh-140px)] sm:min-h-[calc(100vh-180px)]">
 
         {{-- Hero Section --}}
         <div class="text-center space-y-5 sm:space-y-6 py-4 sm:py-6">
             <div class="space-y-3">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-[1.1]">
                     Table Tennis<br>
                     <span class="text-sport-400">Match Preview</span>
                 </h1>
-                <p class="text-sm sm:text-base text-white/40 max-w-lg mx-auto leading-relaxed">
+                <p class="text-sm sm:text-base text-gray-500 dark:text-white/40 max-w-lg mx-auto leading-relaxed">
                     Explora partidos, compara jugadores cara a cara y sigue
                     las estadísticas de los mejores del mundo.
                 </p>
@@ -17,18 +17,18 @@
 
             {{-- Stats Bar --}}
             @if($totalMatches > 0 || $totalTournaments > 0 || $totalPlayers > 0)
-                <div class="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
-                    <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalMatches }}</span>
-                    <span class="text-xs text-white/30">partidos</span>
-                    <span class="w-1 h-1 rounded-full bg-white/10 mx-1"></span>
-                    <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalTournaments }}</span>
-                    <span class="text-xs text-white/30">torneos</span>
-                    <span class="w-1 h-1 rounded-full bg-white/10 mx-1"></span>
-                    <span class="text-sm sm:text-base font-bold text-white/80">{{ $totalPlayers }}</span>
-                    <span class="text-xs text-white/30">jugadores</span>
+                <div class="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06]">
+                    <span class="text-sm sm:text-base font-bold text-gray-900/80 dark:text-white/80">{{ $totalMatches }}</span>
+                    <span class="text-xs text-gray-500/80 dark:text-white/30">partidos</span>
+                    <span class="w-1 h-1 rounded-full bg-black/10 dark:bg-white/10 mx-1"></span>
+                    <span class="text-sm sm:text-base font-bold text-gray-900/80 dark:text-white/80">{{ $totalTournaments }}</span>
+                    <span class="text-xs text-gray-500/80 dark:text-white/30">torneos</span>
+                    <span class="w-1 h-1 rounded-full bg-black/10 dark:bg-white/10 mx-1"></span>
+                    <span class="text-sm sm:text-base font-bold text-gray-900/80 dark:text-white/80">{{ $totalPlayers }}</span>
+                    <span class="text-xs text-gray-500/80 dark:text-white/30">jugadores</span>
                 </div>
             @else
-                <p class="text-sm text-white/30">No data available yet. Import match data to get started.</p>
+                <p class="text-sm text-gray-400 dark:text-white/30">No data available yet. Import match data to get started.</p>
             @endif
 
             {{-- CTA --}}

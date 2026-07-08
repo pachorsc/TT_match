@@ -26,9 +26,9 @@
     </div>
 
     @if($streak['type'] && $streak['count'] > 0)
-        <div class="mt-5 pt-5 border-t border-white/[0.06] text-center">
+        <div class="mt-5 pt-5 border-t border-black/[0.06] dark:border-white/[0.06] text-center">
             <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-xl {{ $streak['type'] === 'W' ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-red-500/10 border border-red-500/20' }}">
-                <span class="text-sm font-semibold text-white/50 uppercase tracking-wider">Current Streak</span>
+                <span class="text-sm font-semibold text-gray-400 dark:text-white/50 uppercase tracking-wider">Current Streak</span>
                 <span class="text-lg font-black {{ $streak['type'] === 'W' ? 'text-emerald-400' : 'text-red-400' }}">
                     {{ $streak['type'] === 'W' ? 'W' : 'L' }}{{ $streak['count'] > 1 ? '×' . $streak['count'] : '' }}
                 </span>
