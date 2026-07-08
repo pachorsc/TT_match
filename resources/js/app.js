@@ -1,6 +1,7 @@
 import './bootstrap';
 import initPlayerSearch from './components/player-search';
 import initPlayerFilter from './components/player-filter';
+import initRankingFilter from './components/ranking-filter';
 import initVideoLoader from './components/video-loader';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     initPlayerSearch();
     initPlayerFilter();
+    initRankingFilter();
     initVideoLoader();
 
     const predictForm = document.getElementById('predict-form');
