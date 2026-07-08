@@ -248,13 +248,13 @@ def player_matches(player_id: int, max_year: int | None, max_pages: int | None):
     """Fetch complete match history for a single player from the matches table page.
 
     Uses the Fabrik table format with all paginated pages.
-    Default year range: current year - 2. Only imports singles matches.
+    Default year range: current year - 5. Only imports singles matches.
     """
     session = _get_session()
 
     today = date.today().isoformat()
     current_year = date.today().year
-    min_year = max_year if max_year else current_year - 2
+    min_year = max_year if max_year else current_year - 5
 
     click.echo(f"Fetching match history for player {player_id}...")
 
@@ -341,13 +341,13 @@ def top100_matches(gender: str, limit: int, max_year: int | None, delay: float, 
     session = _get_session()
     today = date.today().isoformat()
     current_year = date.today().year
-    min_year = max_year if max_year else current_year - 2
+    min_year = max_year if max_year else current_year - 5
 
     # Get ranking data
     if ranking_file:
         click.echo(f"Loading ranking from file: {ranking_file}")
         ranking_data = load_import_file(ranking_file)
-        players = ranking_data.get("rows", [])
+        players = ranking_data.get("rows", [])[:limit]
     else:
         click.echo(f"Fetching {gender} rankings to identify top {limit} players...")
         url_template = RANKING_URLS[gender]

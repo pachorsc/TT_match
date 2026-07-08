@@ -21,7 +21,7 @@ from parser import parse_player_matches_table, parse_pagination_info
 from importer import transform_match, save_import_file
 
 DELAY = 3
-MIN_YEAR = date.today().year - 2
+MIN_YEAR = date.today().year - 5
 
 # All top 100 players without matches (using ITTF IDs where known, WTT IDs otherwise)
 PLAYERS = [

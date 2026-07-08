@@ -156,7 +156,7 @@ def main():
 
     today = date.today().isoformat()
     current_year = date.today().year
-    min_year = args.min_year if args.min_year else current_year - 2
+    min_year = args.min_year if args.min_year else current_year - 5
 
     # Load corrected players
     players = load_corrected_players()
