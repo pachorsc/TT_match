@@ -66,4 +66,153 @@
     .stat-label {
         @apply text-[11px] font-semibold uppercase tracking-wider text-white/40;
     }
+
+    /* ── Stat Bar Enhanced ── */
+    .stat-bar-track {
+        @apply relative h-3 rounded-full overflow-hidden bg-white/[0.06];
+    }
+
+    .stat-bar-fill-a {
+        @apply h-full rounded-l-full transition-all duration-700 ease-out;
+        background: linear-gradient(90deg, rgba(59, 130, 246, 0.7), rgba(59, 130, 246, 0.4));
+    }
+
+    .stat-bar-fill-b {
+        @apply h-full rounded-r-full transition-all duration-700 ease-out;
+        background: linear-gradient(90deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.5));
+    }
+
+    .stat-bar-fill-a.is-winner {
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.8), rgba(16, 185, 129, 0.5));
+    }
+
+    .stat-bar-fill-b.is-winner {
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.5), rgba(16, 185, 129, 0.8));
+    }
+
+    /* ── Win Rate Inline Bar ── */
+    .wr-bar-track {
+        @apply relative h-1.5 rounded-full overflow-hidden bg-white/[0.06];
+    }
+
+    .wr-bar-fill {
+        @apply h-full rounded-full transition-all duration-500 ease-out;
+    }
+
+    .wr-bar-fill.excellent {
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.6), rgba(16, 185, 129, 0.9));
+    }
+
+    .wr-bar-fill.good {
+        background: linear-gradient(90deg, rgba(245, 158, 11, 0.5), rgba(245, 158, 11, 0.8));
+    }
+
+    .wr-bar-fill.poor {
+        background: linear-gradient(90deg, rgba(239, 68, 68, 0.5), rgba(239, 68, 68, 0.8));
+    }
+
+    /* ── Win Rate Ring ── */
+    .wr-ring {
+        @apply relative inline-flex items-center justify-center;
+    }
+
+    .wr-ring svg {
+        transform: rotate(-90deg);
+    }
+
+    .wr-ring-track {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.06);
+    }
+
+    .wr-ring-fill {
+        fill: none;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 1s ease-out;
+    }
+
+    /* ── Streak Badge ── */
+    .streak-badge {
+        @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border;
+    }
+
+    .streak-badge.win {
+        @apply bg-emerald-500/15 text-emerald-400 border-emerald-500/25;
+    }
+
+    .streak-badge.loss {
+        @apply bg-red-500/15 text-red-400 border-red-500/25;
+    }
+
+    /* ── Insight Card ── */
+    .insight-card {
+        @apply flex items-start gap-3 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06];
+    }
+
+    .insight-card:hover {
+        @apply bg-white/[0.05] border-white/[0.1];
+    }
+
+    /* ── Form Block ── */
+    .form-block {
+        @apply h-8 flex-1 rounded-md flex items-center justify-center transition-all duration-200 cursor-default;
+    }
+
+    .form-block:hover {
+        transform: scaleY(1.15);
+    }
+
+    .form-block.win {
+        @apply bg-emerald-500/25;
+    }
+
+    .form-block.win:hover {
+        @apply bg-emerald-500/40;
+    }
+
+    .form-block.loss {
+        @apply bg-red-500/25;
+    }
+
+    .form-block.loss:hover {
+        @apply bg-red-500/40;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .animate-fade-slide-up {
+        animation: fadeSlideUp 0.5s ease-out both;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.4s ease-out both;
+    }
+
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .delay-500 { animation-delay: 500ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .animate-fade-slide-up,
+        .animate-fade-in {
+            animation: none;
+        }
+    }
 }
