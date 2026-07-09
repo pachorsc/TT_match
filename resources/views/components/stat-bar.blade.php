@@ -34,9 +34,9 @@
     <div class="stat-bar-track">
         <div class="stat-bar-fill-a {{ $isATop ? 'is-winner' : '' }}" style="width: {{ $pctA }}%"></div>
         <div class="stat-bar-fill-b {{ $isBTop ? 'is-winner' : '' }} absolute top-0 right-0" style="width: {{ $pctB }}%"></div>
-        @if($highlight && !$isTie)
-            <div class="absolute top-0 bottom-0 w-px bg-gray-300 dark:bg-white/20" style="left: 50%"></div>
-        @endif
+            @if($highlight && !$isTie)
+                <div class="absolute top-0 bottom-0 w-px bg-gray-400/60 dark:bg-white/20" style="left: 50%"></div>
+            @endif
     </div>
 
     {{-- Sample sizes --}}

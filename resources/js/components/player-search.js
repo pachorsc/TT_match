@@ -17,7 +17,7 @@ export default function initPlayerSearch() {
         let noResultsEl = dropdown.querySelector('.player-search-no-results');
         if (!noResultsEl) {
             noResultsEl = document.createElement('div');
-            noResultsEl.className = 'player-search-no-results px-4 py-3 text-sm text-white/30 text-center hidden';
+            noResultsEl.className = 'player-search-no-results px-4 py-3 text-sm text-gray-500 dark:text-white/30 text-center hidden';
             noResultsEl.textContent = 'No players found';
             dropdown.appendChild(noResultsEl);
         }
@@ -57,9 +57,10 @@ export default function initPlayerSearch() {
 
             currentHighlight = index;
 
+            const isDark = document.documentElement.classList.contains('dark');
             visible.forEach((el, i) => {
-                el.classList.toggle('bg-white/[0.06]', i === index);
-                el.classList.toggle('text-white', i === index);
+                el.classList.toggle(isDark ? 'bg-white/[0.06]' : 'bg-gray-100/70', i === index);
+                el.classList.toggle(isDark ? 'text-white' : 'text-gray-900', i === index);
             });
 
             if (visible[index]) {
@@ -75,8 +76,8 @@ export default function initPlayerSearch() {
             input.value = label;
             input.dataset.selected = value;
             closeDropdown();
-            input.classList.remove('text-white/50');
-            input.classList.add('text-white');
+            input.classList.remove('text-white/50', 'text-gray-400');
+            input.classList.add(document.documentElement.classList.contains('dark') ? 'text-white' : 'text-gray-900');
 
             if (clearBtn) clearBtn.classList.remove('hidden');
 
@@ -106,8 +107,8 @@ export default function initPlayerSearch() {
             hiddenInput.value = '';
             input.value = '';
             input.dataset.selected = '';
-            input.classList.remove('text-white');
-            input.classList.add('text-white/50');
+            input.classList.remove('text-white', 'text-gray-900');
+            input.classList.add(document.documentElement.classList.contains('dark') ? 'text-white/50' : 'text-gray-400');
             if (clearBtn) clearBtn.classList.add('hidden');
             closeDropdown();
             updateSubmitButton();
@@ -129,9 +130,10 @@ export default function initPlayerSearch() {
                 btn.classList.toggle('hover:border-sport-500/50', enabled);
                 btn.classList.toggle('cursor-pointer', enabled);
 
-                btn.classList.toggle('bg-white/[0.04]', !enabled);
-                btn.classList.toggle('text-white/20', !enabled);
-                btn.classList.toggle('border-white/[0.06]', !enabled);
+                const isDark = document.documentElement.classList.contains('dark');
+                btn.classList.toggle(isDark ? 'bg-white/[0.04]' : 'bg-gray-100/60', !enabled);
+                btn.classList.toggle(isDark ? 'text-white/20' : 'text-gray-400', !enabled);
+                btn.classList.toggle(isDark ? 'border-white/[0.06]' : 'border-gray-200/80', !enabled);
                 btn.classList.toggle('cursor-not-allowed', !enabled);
                 btn.classList.toggle('opacity-40', !enabled);
             }
@@ -191,11 +193,11 @@ export default function initPlayerSearch() {
         }
 
         if (!hiddenInput.value) {
-            input.classList.add('text-white/50');
+            input.classList.add(document.documentElement.classList.contains('dark') ? 'text-white/50' : 'text-gray-400');
             if (clearBtn) clearBtn.classList.add('hidden');
         } else {
-            input.classList.remove('text-white/50');
-            input.classList.add('text-white');
+            input.classList.remove('text-white/50', 'text-gray-400');
+            input.classList.add(document.documentElement.classList.contains('dark') ? 'text-white' : 'text-gray-900');
         }
 
         updateSubmitButton();

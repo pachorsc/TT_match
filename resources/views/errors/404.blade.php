@@ -3,7 +3,7 @@
     <div class="flex items-center justify-center min-h-[60vh]">
         <div class="text-center space-y-6">
             <div class="space-y-2">
-                <h1 class="text-6xl sm:text-7xl font-extrabold tracking-tight text-gray-200 dark:text-white/10">404</h1>
+                <h1 class="text-6xl sm:text-7xl font-extrabold tracking-tight text-gray-300 dark:text-white/10">404</h1>
                 <p class="text-lg font-semibold text-gray-500 dark:text-white/60">{{ $message ?? 'Resource not found.' }}</p>
             </div>
             <p class="text-sm text-gray-400 dark:text-white/30 max-w-sm mx-auto">The page you are looking for does not exist or has been moved.</p>

@@ -15,7 +15,7 @@
             {!! $icons[$icon] ?? $icons['chart-bar'] !!}
         </svg>
     </div>
-    <p class="text-sm text-gray-500 dark:text-white/60 leading-relaxed">
+    <p class="text-sm text-gray-600 dark:text-white/60 leading-relaxed">
         {!! $highlight ? '<span class="font-bold text-gray-900 dark:text-white/90">' . e($highlight) . '</span> ' : '' !!}
         {{ $text }}
     </p>

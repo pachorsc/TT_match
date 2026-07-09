@@ -93,18 +93,18 @@ function createOrGetSlot(container, playerId) {
         <div class="videos-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 hidden"></div>
         <div class="videos-empty hidden">
             <div class="card-glass px-6 py-14 sm:py-16 text-center space-y-4">
-                <svg class="w-10 h-10 mx-auto text-white/15" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor">
+                <svg class="w-10 h-10 mx-auto text-gray-400 dark:text-white/15" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
                 </svg>
-                <p class="text-sm text-white/30 max-w-xs mx-auto">No se encontraron videos para este jugador.</p>
+                <p class="text-sm text-gray-500 dark:text-white/30 max-w-xs mx-auto">No se encontraron videos para este jugador.</p>
             </div>
         </div>
         <div class="videos-error hidden">
             <div class="card-glass px-6 py-14 sm:py-16 text-center space-y-4">
-                <svg class="w-10 h-10 mx-auto text-white/15" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor">
+                <svg class="w-10 h-10 mx-auto text-gray-400 dark:text-white/15" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                 </svg>
-                <p class="text-sm text-white/30 max-w-xs mx-auto">Error al cargar videos. Intenta de nuevo.</p>
+                <p class="text-sm text-gray-500 dark:text-white/30 max-w-xs mx-auto">Error al cargar videos. Intenta de nuevo.</p>
             </div>
         </div>
     `;
@@ -181,13 +181,13 @@ function createVideoCard(video, playerName) {
             </div>
         </div>
         <div class="p-4 space-y-2">
-            <h4 class="text-sm font-bold leading-snug line-clamp-2 text-white/90 group-hover:text-sport-400 transition-colors duration-200">
+            <h4 class="text-sm font-bold leading-snug line-clamp-2 text-gray-900 dark:text-white/90 group-hover:text-sport-400 transition-colors duration-200">
                 ${escapeHtml(video.title)}
             </h4>
-            ${video.description ? `<p class="text-xs text-white/40 leading-relaxed line-clamp-2">${escapeHtml(video.description)}</p>` : ''}
+            ${video.description ? `<p class="text-xs text-gray-500 dark:text-white/40 leading-relaxed line-clamp-2">${escapeHtml(video.description)}</p>` : ''}
             <div class="flex items-center justify-between gap-3 pt-2">
-                <span class="text-xs text-white/30">${publishedAt}</span>
-                <span class="text-xs text-white/50 font-medium truncate">${escapeHtml(channelTitle)}</span>
+                <span class="text-xs text-gray-500 dark:text-white/30">${publishedAt}</span>
+                <span class="text-xs text-gray-600 dark:text-white/50 font-medium truncate">${escapeHtml(channelTitle)}</span>
             </div>
         </div>
     `;

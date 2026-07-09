@@ -7,7 +7,7 @@
 
 <div class="card-glass overflow-hidden animate-fade-slide-up">
     {{-- Header --}}
-    <div class="px-5 sm:px-6 py-3.5 border-b border-black/[0.06] dark:border-white/[0.06]">
+    <div class="px-5 sm:px-6 py-3.5 border-b border-gray-200/80 dark:border-white/[0.06]">
         <div class="flex items-center gap-3">
             <div class="w-1 h-4 rounded-full bg-sport-500/60"></div>
             <h3 class="section-heading">{{ $title }}</h3>
@@ -16,7 +16,7 @@
 
     {{-- Column headers --}}
     <div class="px-5 sm:px-6 pt-3 pb-2">
-        <div class="grid grid-cols-[1fr_90px_90px] sm:grid-cols-[1fr_120px_120px] gap-3 text-center text-[10px] font-semibold uppercase tracking-[0.1em] text-gray-400 dark:text-white/30">
+        <div class="grid grid-cols-[1fr_90px_90px] sm:grid-cols-[1fr_120px_120px] gap-3 text-center text-[10px] font-semibold uppercase tracking-[0.1em] text-gray-500 dark:text-white/30">
             <div class="text-left">Categoría</div>
             <div>{{ $playerA->first_name }}</div>
             <div>{{ $playerB->first_name }}</div>
@@ -24,7 +24,7 @@
     </div>
 
     {{-- Rows --}}
-    <div class="px-5 sm:px-6 pb-4 divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+    <div class="px-5 sm:px-6 pb-4 divide-y divide-gray-200/70 dark:divide-white/[0.04]">
         @foreach($breakdown as $category => $data)
             @php
                 $aWinRate = $data['playerA']['win_rate'];
@@ -38,7 +38,7 @@
                 $aBarClass = $aWinRate >= 60 ? 'excellent' : ($aWinRate >= 45 ? 'good' : 'poor');
                 $bBarClass = $bWinRate >= 60 ? 'excellent' : ($bWinRate >= 45 ? 'good' : 'poor');
             @endphp
-            <div class="grid grid-cols-[1fr_90px_90px] sm:grid-cols-[1fr_120px_120px] gap-3 py-3 items-center group hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors rounded-lg -mx-2 px-2">
+            <div class="grid grid-cols-[1fr_90px_90px] sm:grid-cols-[1fr_120px_120px] gap-3 py-3 items-center group hover:bg-gray-50/80 dark:hover:bg-white/[0.02] transition-colors rounded-lg -mx-2 px-2">
                 {{-- Category --}}
                 <div class="text-sm font-medium text-gray-500 dark:text-white/60 group-hover:text-gray-700 dark:group-hover:text-white/80 transition-colors">{{ $category }}</div>
 

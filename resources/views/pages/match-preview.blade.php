@@ -7,8 +7,8 @@
             <x-player-header :player="$playerA['player']" :rankingMovement="$playerA['rankingMovement']" />
 
             <div class="flex flex-col items-center gap-2 shrink-0">
-                <div class="relative flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.03]">
-                    <span class="text-sm sm:text-base font-black tracking-wider text-gray-400 dark:text-white/40">VS</span>
+                <div class="relative flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-gray-200/80 dark:border-white/10 bg-gray-100/50 dark:bg-white/[0.03]">
+                    <span class="text-sm sm:text-base font-black tracking-wider text-gray-500 dark:text-white/40">VS</span>
                 </div>
             </div>
 

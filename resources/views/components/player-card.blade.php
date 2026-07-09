@@ -97,7 +97,7 @@
         </div>
 
         @if($stats)
-            <div class="pt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
+            <div class="pt-4 border-t border-gray-200/80 dark:border-white/[0.06]">
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
                     <div>
                         <p class="stat-value text-lg">{{ $stats['total_matches'] }}</p>

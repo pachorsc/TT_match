@@ -22,41 +22,41 @@
     --color-sport-800: #1e40af;
     --color-sport-900: #1e3a8a;
 
-    --color-surface: rgba(255, 255, 255, 0.03);
-    --color-surface-hover: rgba(255, 255, 255, 0.06);
-    --color-surface-active: rgba(255, 255, 255, 0.1);
-    --color-border-subtle: rgba(255, 255, 255, 0.06);
-    --color-border-hover: rgba(255, 255, 255, 0.12);
-    --color-border-accent: rgba(59, 130, 246, 0.3);
+    --color-surface: #ffffff;
+    --color-surface-hover: #f8f9fb;
+    --color-surface-active: #f0f2f5;
+    --color-border-subtle: rgba(0, 0, 0, 0.06);
+    --color-border-hover: rgba(0, 0, 0, 0.1);
+    --color-border-accent: rgba(59, 130, 246, 0.2);
 
-    --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.06);
-    --shadow-card-hover: 0 0 0 1px rgba(59, 130, 246, 0.3), 0 4px 24px rgba(59, 130, 246, 0.1);
-    --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(59, 130, 246, 0.15);
+    --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
 @layer utilities {
     .card-glass {
-        @apply rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.03] backdrop-blur-[2px] transition-all duration-300 shadow-sm dark:shadow-none;
+        @apply rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-white/[0.03] backdrop-blur-[2px] transition-all duration-300;
     }
 
     .card-glass:hover {
-        @apply border-black/[0.15] dark:border-white/[0.15] bg-gray-50 dark:bg-white/[0.05];
+        @apply border-gray-300/70 dark:border-white/[0.15] bg-gray-50/70 dark:bg-white/[0.05];
     }
 
     .badge-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-black/5 dark:bg-white/10 text-gray-600 dark:text-white/70 border-black/10 dark:border-white/10;
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-gray-100/70 dark:bg-white/10 text-gray-600 dark:text-white/70 border-gray-200/80 dark:border-white/10;
     }
 
     .badge-amber-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-amber-500/15 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/25 dark:border-amber-500/30;
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border bg-amber-50 dark:bg-amber-500/20 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-500/30;
     }
 
     .badge-blue-glass {
-        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-sport-500/15 dark:bg-sport-500/20 text-sport-500 dark:text-sport-400 border-sport-500/25 dark:border-sport-500/30;
+        @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border bg-sport-50 dark:bg-sport-500/20 text-sport-600 dark:text-sport-400 border-sport-200 dark:border-sport-500/30;
     }
 
     .section-heading {
-        @apply text-xs font-bold uppercase tracking-[0.12em] text-gray-400 dark:text-white/40;
+        @apply text-xs font-bold uppercase tracking-[0.12em] text-gray-500 dark:text-white/40;
     }
 
     .stat-value {
@@ -64,12 +64,12 @@
     }
 
     .stat-label {
-        @apply text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-white/40;
+        @apply text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-white/40;
     }
 
     /* ── Stat Bar Enhanced ── */
     .stat-bar-track {
-        @apply relative h-3 rounded-full overflow-hidden bg-black/[0.06] dark:bg-white/[0.06];
+        @apply relative h-3 rounded-full overflow-hidden bg-gray-200/70 dark:bg-white/[0.06];
     }
 
     .stat-bar-fill-a {
@@ -92,7 +92,7 @@
 
     /* ── Win Rate Inline Bar ── */
     .wr-bar-track {
-        @apply relative h-1.5 rounded-full overflow-hidden bg-black/[0.06] dark:bg-white/[0.06];
+        @apply relative h-1.5 rounded-full overflow-hidden bg-gray-200/70 dark:bg-white/[0.06];
     }
 
     .wr-bar-fill {
@@ -122,10 +122,10 @@
 
     .wr-ring-track {
         fill: none;
-        stroke: rgba(0, 0, 0, 0.06);
+        stroke: #e5e7eb;
     }
 
-    :dark .wr-ring-track {
+    .dark .wr-ring-track {
         stroke: rgba(255, 255, 255, 0.06);
     }
 
@@ -141,20 +141,20 @@
     }
 
     .streak-badge.win {
-        @apply bg-emerald-500/15 text-emerald-400 border-emerald-500/25;
+        @apply bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/25;
     }
 
     .streak-badge.loss {
-        @apply bg-red-500/15 text-red-400 border-red-500/25;
+        @apply bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-400 border-red-200 dark:border-red-500/25;
     }
 
     /* ── Insight Card ── */
     .insight-card {
-        @apply flex items-start gap-3 px-4 py-3 rounded-xl bg-white dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06];
+        @apply flex items-start gap-3 px-4 py-3 rounded-xl bg-white dark:bg-white/[0.03] border border-gray-200/80 dark:border-white/[0.06];
     }
 
     .insight-card:hover {
-        @apply bg-gray-50 dark:bg-white/[0.05] border-black/[0.1] dark:border-white/[0.1];
+        @apply bg-gray-50/80 dark:bg-white/[0.05] border-gray-300/70 dark:border-white/[0.1];
     }
 
     /* ── Form Block ── */
@@ -167,19 +167,19 @@
     }
 
     .form-block.win {
-        @apply bg-emerald-500/25;
+        @apply bg-emerald-200/70 dark:bg-emerald-500/25;
     }
 
     .form-block.win:hover {
-        @apply bg-emerald-500/40;
+        @apply bg-emerald-300/60 dark:bg-emerald-500/40;
     }
 
     .form-block.loss {
-        @apply bg-red-500/25;
+        @apply bg-red-200/70 dark:bg-red-500/25;
     }
 
     .form-block.loss:hover {
-        @apply bg-red-500/40;
+        @apply bg-red-300/60 dark:bg-red-500/40;
     }
 
     /* ── Animations ── */
@@ -224,7 +224,11 @@
         transition: filter 0.3s ease;
     }
 
-    .logo-glow:hover {
+    .dark .logo-glow:hover {
         filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));
+    }
+
+    .logo-glow:hover {
+        filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.25));
     }
 }

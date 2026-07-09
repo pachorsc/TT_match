@@ -5,7 +5,7 @@
         {{-- Header --}}
         <div class="text-center space-y-2">
             <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">Comparar Jugadores</h1>
-            <p class="text-sm sm:text-base text-gray-400 dark:text-white/40">Selecciona dos jugadores para ver su enfrentamiento</p>
+            <p class="text-sm sm:text-base text-gray-500 dark:text-white/40">Selecciona dos jugadores para ver su enfrentamiento</p>
         </div>
 
         {{-- Gender Toggle + Player Selectors --}}
@@ -18,13 +18,13 @@
                 @endphp
                 <a href="{{ route('compare', ['gender' => 'M', 'player_a' => request('player_a'), 'player_b' => request('player_b')]) }}"
                    class="px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200
-                   {{ $currentGender === 'M' ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30' : 'bg-black/[0.04] dark:bg-white/[0.04] text-gray-400 dark:text-white/50 hover:text-gray-600 dark:hover:text-white/70 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] border border-transparent' }}">
-                    ♂ Masculino
+                   {{ $currentGender === 'M' ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30' : 'bg-gray-100/60 dark:bg-white/[0.04] text-gray-500 dark:text-white/50 hover:text-gray-700 dark:hover:text-white/70 hover:bg-gray-200/60 dark:hover:bg-white/[0.06] border border-transparent' }}">
+                     ♂ Masculino
                 </a>
                 <a href="{{ route('compare', ['gender' => 'F', 'player_a' => request('player_a'), 'player_b' => request('player_b')]) }}"
                    class="px-5 py-2 rounded-xl text-sm font-bold transition-all duration-200
-                   {{ $currentGender === 'F' ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30' : 'bg-black/[0.04] dark:bg-white/[0.04] text-gray-400 dark:text-white/50 hover:text-gray-600 dark:hover:text-white/70 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] border border-transparent' }}">
-                    ♀ Femenino
+                   {{ $currentGender === 'F' ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30' : 'bg-gray-100/60 dark:bg-white/[0.04] text-gray-500 dark:text-white/50 hover:text-gray-700 dark:hover:text-white/70 hover:bg-gray-200/60 dark:hover:bg-white/[0.06] border border-transparent' }}">
+                     ♀ Femenino
                 </a>
             </div>
 
@@ -35,41 +35,41 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     {{-- Player A --}}
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-400 dark:text-white/30 mb-2">Jugador A</label>
+                        <label class="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500 dark:text-white/30 mb-2">Jugador A</label>
                         <div class="player-search relative">
                             <input type="hidden" name="player_a" class="player-search-hidden"
                                    value="{{ $playerA?->id }}">
                             <div class="relative">
                                 <input type="text"
-                                       class="player-search-input w-full bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.08] rounded-xl px-4 py-3 pr-10 text-sm outline-none transition-all duration-200 placeholder:text-gray-300 dark:placeholder:text-white/20 focus:border-sport-500/40 focus:bg-black/[0.06] dark:focus:bg-white/[0.06]"
+                                       class="player-search-input w-full bg-gray-100/60 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/[0.08] rounded-xl px-4 py-3 pr-10 text-sm outline-none transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:border-sport-500/40 focus:bg-gray-200/50 dark:focus:bg-white/[0.06]"
                                        placeholder="Buscar jugador..."
                                        autocomplete="off"
                                        value="{{ $playerA?->full_name ?? '' }}"
                                        data-name="player_a">
                                 <button type="button"
-                                        class="player-search-clear absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 dark:text-white/20 hover:text-gray-500 dark:hover:text-white/60 transition-colors">
+                                        class="player-search-clear absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/20 hover:text-gray-600 dark:hover:text-white/60 transition-colors">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
-                            <div class="player-search-dropdown absolute top-full left-0 right-0 mt-1 z-50 max-h-60 overflow-y-auto rounded-xl bg-white dark:bg-[#0f0f0f] border border-black/[0.08] dark:border-white/[0.08] shadow-2xl hidden">
+                            <div class="player-search-dropdown absolute top-full left-0 right-0 mt-1 z-50 max-h-60 overflow-y-auto rounded-xl bg-white dark:bg-[#0f0f0f] border border-gray-200/80 dark:border-white/[0.08] shadow-2xl hidden">
                                 @foreach($players as $p)
                                     <button type="button"
-                                            class="player-search-item w-full text-left px-4 py-2.5 text-sm text-gray-500 dark:text-white/60 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-colors flex items-center justify-between gap-3"
+                                            class="player-search-item w-full text-left px-4 py-2.5 text-sm text-gray-600 dark:text-white/60 hover:bg-gray-50/80 dark:hover:bg-white/[0.06] transition-colors flex items-center justify-between gap-3"
                                             data-value="{{ $p->id }}"
                                             data-label="{{ $p->full_name }}"
                                             data-search="{{ strtolower($p->full_name . ' ' . $p->country_code) }}">
                                         <div class="flex items-center gap-3 min-w-0">
                                             <span class="font-medium truncate">{{ $p->full_name }}</span>
-                                            <span class="text-xs text-gray-400 dark:text-white/30 shrink-0">{{ $p->country_code }}</span>
+                                            <span class="text-xs text-gray-500 dark:text-white/30 shrink-0">{{ $p->country_code }}</span>
                                         </div>
                                         <div class="flex items-center gap-3 shrink-0 text-xs">
                                             @if($p->world_ranking)
                                                 <span class="text-amber-400/80 font-semibold">#{{ $p->world_ranking }}</span>
                                             @endif
                                             @if($p->rating_points)
-                                                <span class="text-gray-400 dark:text-white/30">{{ number_format($p->rating_points) }}pts</span>
+                                                <span class="text-gray-500 dark:text-white/30">{{ number_format($p->rating_points) }}pts</span>
                                             @endif
                                         </div>
                                     </button>
@@ -80,41 +80,41 @@
 
                     {{-- Player B --}}
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-400 dark:text-white/30 mb-2">Jugador B</label>
+                        <label class="block text-xs font-semibold uppercase tracking-[0.1em] text-gray-500 dark:text-white/30 mb-2">Jugador B</label>
                         <div class="player-search relative">
                             <input type="hidden" name="player_b" class="player-search-hidden"
                                    value="{{ $playerB?->id }}">
                             <div class="relative">
                                 <input type="text"
-                                       class="player-search-input w-full bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.08] dark:border-white/[0.08] rounded-xl px-4 py-3 pr-10 text-sm outline-none transition-all duration-200 placeholder:text-gray-300 dark:placeholder:text-white/20 focus:border-sport-500/40 focus:bg-black/[0.06] dark:focus:bg-white/[0.06]"
+                                       class="player-search-input w-full bg-gray-100/60 dark:bg-white/[0.04] border border-gray-200/80 dark:border-white/[0.08] rounded-xl px-4 py-3 pr-10 text-sm outline-none transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-white/20 focus:border-sport-500/40 focus:bg-gray-200/50 dark:focus:bg-white/[0.06]"
                                        placeholder="Buscar jugador..."
                                        autocomplete="off"
                                        value="{{ $playerB?->full_name ?? '' }}"
                                        data-name="player_b">
                                 <button type="button"
-                                        class="player-search-clear absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 dark:text-white/20 hover:text-gray-500 dark:hover:text-white/60 transition-colors">
+                                        class="player-search-clear absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/20 hover:text-gray-600 dark:hover:text-white/60 transition-colors">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
-                            <div class="player-search-dropdown absolute top-full left-0 right-0 mt-1 z-50 max-h-60 overflow-y-auto rounded-xl bg-white dark:bg-[#0f0f0f] border border-black/[0.08] dark:border-white/[0.08] shadow-2xl hidden">
+                            <div class="player-search-dropdown absolute top-full left-0 right-0 mt-1 z-50 max-h-60 overflow-y-auto rounded-xl bg-white dark:bg-[#0f0f0f] border border-gray-200/80 dark:border-white/[0.08] shadow-2xl hidden">
                                 @foreach($players as $p)
                                     <button type="button"
-                                            class="player-search-item w-full text-left px-4 py-2.5 text-sm text-gray-500 dark:text-white/60 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-colors flex items-center justify-between gap-3"
+                                            class="player-search-item w-full text-left px-4 py-2.5 text-sm text-gray-600 dark:text-white/60 hover:bg-gray-50/80 dark:hover:bg-white/[0.06] transition-colors flex items-center justify-between gap-3"
                                             data-value="{{ $p->id }}"
                                             data-label="{{ $p->full_name }}"
                                             data-search="{{ strtolower($p->full_name . ' ' . $p->country_code) }}">
                                         <div class="flex items-center gap-3 min-w-0">
                                             <span class="font-medium truncate">{{ $p->full_name }}</span>
-                                            <span class="text-xs text-gray-400 dark:text-white/30 shrink-0">{{ $p->country_code }}</span>
+                                            <span class="text-xs text-gray-500 dark:text-white/30 shrink-0">{{ $p->country_code }}</span>
                                         </div>
                                         <div class="flex items-center gap-3 shrink-0 text-xs">
                                             @if($p->world_ranking)
                                                 <span class="text-amber-400/80 font-semibold">#{{ $p->world_ranking }}</span>
                                             @endif
                                             @if($p->rating_points)
-                                                <span class="text-gray-400 dark:text-white/30">{{ number_format($p->rating_points) }}pts</span>
+                                                <span class="text-gray-500 dark:text-white/30">{{ number_format($p->rating_points) }}pts</span>
                                             @endif
                                         </div>
                                     </button>
@@ -126,7 +126,7 @@
 
                 <div class="text-center">
                     <button type="submit"
-                            class="predict-submit inline-flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ $playerA && $playerB ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30 hover:bg-sport-500/30 hover:border-sport-500/50 cursor-pointer' : 'bg-black/[0.04] dark:bg-white/[0.04] text-gray-300 dark:text-white/20 border border-black/[0.06] dark:border-white/[0.06] cursor-not-allowed' }}"
+                            class="predict-submit inline-flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-sm transition-all duration-200 {{ $playerA && $playerB ? 'bg-sport-500/20 text-sport-400 border border-sport-500/30 hover:bg-sport-500/30 hover:border-sport-500/50 cursor-pointer' : 'bg-gray-100/60 dark:bg-white/[0.04] text-gray-400 dark:text-white/20 border border-gray-200/80 dark:border-white/[0.06] cursor-not-allowed' }}"
                             {{ !$playerA || !$playerB ? 'opacity-40' : '' }}>
                         <svg class="w-4 h-4 predict-submit-icon" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -150,8 +150,8 @@
                     <x-player-header :player="$playerAData['player']" :rankingMovement="$playerAData['rankingMovement']" />
 
                     <div class="flex flex-col items-center gap-2 shrink-0">
-                        <div class="relative flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.03]">
-                            <span class="text-sm sm:text-base font-black tracking-wider text-gray-400 dark:text-white/40">VS</span>
+                        <div class="relative flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-gray-200/80 dark:border-white/10 bg-gray-100/50 dark:bg-white/[0.03]">
+                            <span class="text-sm sm:text-base font-black tracking-wider text-gray-500 dark:text-white/40">VS</span>
                         </div>
                     </div>
 
