@@ -60,6 +60,22 @@ The application only displays factual information. No predictions, odds, or prob
 - **Player search** with autocomplete
 - **YouTube embed cards** loaded dynamically per player
 
+### Player Profile Page
+
+- **Player header:** Full name, country flag, ranking, rating, hand, age, height, playing style
+- **Career stats:** Total matches, wins, losses, win percentage
+- **Ranking history:** Table + trend indicator (up/down/stable)
+- **Match history:** All completed matches (paginated, filterable by year/tournament)
+- **Current streak:** Consecutive wins or losses
+- **Performance by round:** Win rates in different tournament stages
+
+### Rankings Page
+
+- **Gender toggle** (Masculino / Femenino)
+- **Current rankings table:** Position, player name, country, rating points, movement indicator
+- **Top 50 players per gender**
+- **Click on player** → Profile page
+
 ## Design Philosophy
 
 - Minimal interface

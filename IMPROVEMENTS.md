@@ -1,8 +1,8 @@
 # IMPROVEMENTS.md — Upcoming Improvements
 
-## Planned Features
+## Completed Features
 
-### 1. Player Profile Page (High Priority)
+### 1. Player Profile Page ✅
 
 Individual player page with complete stats and history.
 
@@ -25,7 +25,7 @@ Individual player page with complete stats and history.
 
 ---
 
-### 2. Rankings Page (High Priority)
+### 2. Rankings Page ✅
 
 World rankings table with sorting and filtering.
 
@@ -46,7 +46,7 @@ World rankings table with sorting and filtering.
 
 ---
 
-### 3. Advanced Stats Comparison (Low Priority)
+### 3. Advanced Stats Comparison ✅
 
 Side-by-side statistical comparison with detailed metrics.
 
@@ -91,4 +91,30 @@ Side-by-side statistical comparison with detailed metrics.
 
 ---
 
-*Last updated: 2026-07-07*
+## Future Improvements
+
+### 1. Player Photos/Avatars
+
+- [ ] Add player photos to profiles
+- [ ] Consider using WTT or ITTF official photos
+
+### 2. Real-time Match Tracking
+
+- [ ] Live score updates during matches
+- [ ] Push notifications for match starts
+
+### 3. User Accounts
+
+- [ ] User registration and login
+- [ ] Favorite players tracking
+- [ ] Custom match alerts
+
+### 4. Mobile Optimization
+
+- [ ] PWA support
+- [ ] Touch-optimized navigation
+- [ ] Offline data caching
+
+---
+
+*Last updated: 2026-07-09*

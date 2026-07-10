@@ -13,7 +13,7 @@ Aplicación web de escritorio-first que muestra información objetiva de dos jug
 
 ## Capturas de Pantalla
 
-> *Próximamente*
+> *Coming soon — V1 screenshots will be added after initial deployment*
 
 ## Requisitos Previos
 
